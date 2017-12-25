@@ -1,0 +1,23 @@
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+$clr-font: Metropolis, 'Nanum Gothic';
+$clr-altFont: Metropolis, 'Nanum Gothic';
+
+.label.clickable {
+  cursor: pointer;
+}
+
+.card {
+  &.light-blue {
+    border-left: 2px solid #a6d8e7;
+  }
+  &.orange {
+    border-left: 2px solid #ff5500;
+  }
+  &.blue {
+    border-left: 2px solid #003d79;
+  }
+  &.purple {
+    border-left: 2px solid #9B56BB;
+  }
+}
