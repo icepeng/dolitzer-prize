@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -6,14 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
-import { Angulartics2Module } from 'angulartics2';
-import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 
 import { AppComponent } from './app.component';
+import { AuthModule } from './auth/auth.module';
+import { TokenInterceptor } from './auth/services/token.interceptor';
 import { APP_CONFIG, appConfig } from './config';
-import { CoreModule } from './core/core.module';
-import { HomeModule } from './home/home.module';
 import { metaReducers, reducers } from './reducers';
 import { appRoutes } from './routes';
 
@@ -25,14 +24,20 @@ import { appRoutes } from './routes';
     FormsModule,
     HttpClientModule,
     ClarityModule,
+    AuthModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    CoreModule.forRoot(),
-    HomeModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    StoreRouterConnectingModule,
     EffectsModule.forRoot([]),
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
   ],
-  providers: [{ provide: APP_CONFIG, useValue: appConfig }],
+  providers: [
+    { provide: APP_CONFIG, useValue: appConfig },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

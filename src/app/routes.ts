@@ -1,9 +1,18 @@
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
+import { AuthGuard } from './auth/services/auth-guard.service';
 
 export const appRoutes: Routes = [
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  {
+    path: 'gallary',
+    canActivate: [AuthGuard],
+    loadChildren: './gallary/gallary.module#GallaryModule',
+  },
+  {
+    path: 'upload',
+    canActivate: [AuthGuard],
+    loadChildren: './upload/upload.module#UploadModule',
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' },
 ];
