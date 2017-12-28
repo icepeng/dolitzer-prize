@@ -18,7 +18,7 @@ export class AuthEffects {
   login$ = this.actions$
     .ofType(AuthActionTypes.Login)
     .pipe(
-      map((action: Login) => action.payload.token),
+      map((action: Login) => action.payload),
       switchMap(token =>
         this.authService
           .decodeToken(token)

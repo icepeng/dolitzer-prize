@@ -6,6 +6,7 @@ export enum PhotoActionTypes {
   Load = '[Photo] Load',
   LoadSuccess = '[Photo] Load Success',
   LoadFailure = '[Photo] Load Failure',
+  Select = '[Photo] Select',
 }
 
 export class Load implements Action {
@@ -15,7 +16,7 @@ export class Load implements Action {
 export class LoadSuccess implements Action {
   readonly type = PhotoActionTypes.LoadSuccess;
 
-  constructor(public payload: { photos: Photo[] }) {}
+  constructor(public payload: Photo[]) {}
 }
 
 export class LoadFailure implements Action {
@@ -24,4 +25,10 @@ export class LoadFailure implements Action {
   constructor(public payload: any) {}
 }
 
-export type PhotoActions = Load | LoadSuccess | LoadFailure;
+export class Select implements Action {
+  readonly type = PhotoActionTypes.Select;
+
+  constructor(public payload: number) {}
+}
+
+export type PhotoActions = Load | LoadSuccess | LoadFailure | Select;

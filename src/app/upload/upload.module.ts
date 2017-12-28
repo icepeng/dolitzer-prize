@@ -4,7 +4,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../shared/shared.module';
-import { UploadComponent } from './components/upload.component';
+import { UploadComponent } from './containers/upload.component';
 import { UploadEffects } from './effects/upload';
 import { reducers } from './reducers';
 import { UploadService } from './services/upload.service';

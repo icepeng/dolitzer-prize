@@ -1,7 +1,8 @@
-import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import * as fromGallary from '../reducers';
-import * as Gallary from '../actions/photo';
+import { Store } from '@ngrx/store';
+
+import * as Photo from '../../photo/actions/photo';
+import * as fromPhoto from '../../photo/reducers';
 
 @Component({
   selector: 'app-gallary',
@@ -9,11 +10,11 @@ import * as Gallary from '../actions/photo';
   styleUrls: ['./gallary.component.scss'],
 })
 export class GallaryComponent implements OnInit {
-  photos$ = this.store.select(fromGallary.getPhotos);
+  photos$ = this.store.select(fromPhoto.getAllPhotos);
 
-  constructor(private store: Store<fromGallary.GallaryState>) {}
+  constructor(private store: Store<fromPhoto.PhotoState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new Gallary.Load());
+    this.store.dispatch(new Photo.Load());
   }
 }

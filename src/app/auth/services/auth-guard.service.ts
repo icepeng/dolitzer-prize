@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
       return of(false);
     }
     return of(localToken).pipe(
-      tap(token => this.store.dispatch(new Auth.Login({ token }))),
+      tap(token => this.store.dispatch(new Auth.Login(token))),
       switchMap(() => this.store.select(fromAuth.getLoggedIn).pipe(take(1))),
     );
   }

@@ -14,14 +14,14 @@ export const reducers = {
   status: fromUpload.reducer,
 };
 
-export const selectUploadState = createFeatureSelector<UploadState>('upload');
+export const getUploadState = createFeatureSelector<UploadState>('upload');
 
-export const selectUploadStatusState = createSelector(
-  selectUploadState,
+export const getUploadStatusState = createSelector(
+  getUploadState,
   (state: UploadState) => state.status,
 );
 
 export const getError = createSelector(
-  selectUploadStatusState,
+  getUploadStatusState,
   fromUpload.getError,
 );

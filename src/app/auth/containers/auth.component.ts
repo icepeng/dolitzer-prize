@@ -29,6 +29,6 @@ export class AuthComponent implements OnInit {
   }
 
   receiveMessage = (event) => {
-    this.store.dispatch(new Auth.Login({ token: event.data }));
+    this.store.dispatch(new Auth.Login(event.data));
   }
 }

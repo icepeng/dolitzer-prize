@@ -17,7 +17,7 @@ export class PhotoEffects {
         this.photoService
           .getAll()
           .pipe(
-            map(photos => new LoadSuccess({ photos })),
+            map(photos => new LoadSuccess(photos)),
             catchError(err => of(new LoadFailure(err))),
           ),
       ),
