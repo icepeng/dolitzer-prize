@@ -17,7 +17,13 @@ export class AuthComponent implements OnInit {
     private store: Store<fromAuth.AuthState>,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const localToken = localStorage.getItem('token');
+    if (!localToken) {
+      return;
+    }
+    this.store.dispatch(new Auth.Login(localToken));
+  }
 
   auth() {
     window.open(
@@ -28,7 +34,7 @@ export class AuthComponent implements OnInit {
     window.addEventListener('message', this.receiveMessage);
   }
 
-  receiveMessage = (event) => {
+  receiveMessage = event => {
     this.store.dispatch(new Auth.Login(event.data));
-  }
+  };
 }

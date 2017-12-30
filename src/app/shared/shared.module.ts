@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
+import { NavigatorComponent } from './navigator/navigator.component';
+
 @NgModule({
   exports: [
     CommonModule,
@@ -11,8 +13,9 @@ import { ClarityModule } from '@clr/angular';
     ClarityModule,
     FormsModule,
     ReactiveFormsModule,
+    NavigatorComponent,
   ],
-  imports: [CommonModule],
-  declarations: [],
+  imports: [CommonModule, ClarityModule],
+  declarations: [NavigatorComponent],
 })
 export class SharedModule {}

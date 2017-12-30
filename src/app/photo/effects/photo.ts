@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { LoadFailure, LoadSuccess, PhotoActionTypes } from '../actions/photo';
 import { PhotoService } from '../services/photo.service';
@@ -13,7 +13,7 @@ export class PhotoEffects {
   load$ = this.actions$
     .ofType(PhotoActionTypes.Load)
     .pipe(
-      exhaustMap(() =>
+      switchMap(() =>
         this.photoService
           .getAll()
           .pipe(

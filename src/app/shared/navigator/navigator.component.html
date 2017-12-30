@@ -1,0 +1,8 @@
+<div class="navigator">
+  <button class="btn btn-link" [attr.disabled]="isFirst" (click)="prev.emit()">
+    <clr-icon shape="caret" dir="left"></clr-icon>Prev</button>
+  <span>{{ page }} / {{ totalPage }}</span>
+  <button class="btn btn-link" [attr.disabled]="isLast" (click)="next.emit()">Next
+    <clr-icon shape="caret" dir="right"></clr-icon>
+  </button>
+</div>

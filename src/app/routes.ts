@@ -4,9 +4,9 @@ import { AuthGuard } from './auth/services/auth-guard.service';
 
 export const appRoutes: Routes = [
   {
-    path: 'gallary',
+    path: 'gallery',
     canActivate: [AuthGuard],
-    loadChildren: './gallary/gallary.module#GallaryModule',
+    loadChildren: './gallery/gallery.module#GalleryModule',
   },
   {
     path: 'upload',

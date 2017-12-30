@@ -1,0 +1,3 @@
+<h1>갤러리</h1>
+<app-photo-list [photos]="displayPhotos$ | async"></app-photo-list>
+<app-navigator [total]="total$ | async" [perPage]="perPage" [page]="page$ | async" (prev)="prev()" (next)="next()"></app-navigator>

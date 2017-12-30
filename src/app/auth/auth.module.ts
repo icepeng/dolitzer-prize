@@ -9,6 +9,7 @@ import { AuthEffects } from './effects/auth';
 import { reducers } from './reducers';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import { HttpAuth } from './services/http-auth.service';
 
 @NgModule({
   imports: [SharedModule],
@@ -18,7 +19,7 @@ export class AuthModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: RootAuthModule,
-      providers: [AuthService, AuthGuard],
+      providers: [AuthService, AuthGuard, HttpAuth],
     };
   }
 }

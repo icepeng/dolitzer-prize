@@ -1,0 +1,16 @@
+<form [formGroup]="formGroup" class="form" (submit)="onSubmit()">
+  <section class="form-block">
+    <div class="form-group">
+      <label for="title">작품명</label>
+      <input formControlName="title" type="text" id="title" size="45">
+    </div>
+    <div class="form-group">
+      <label for="title">URL</label>
+      <input formControlName="imgLink" type="text" id="title" size="75">
+    </div>
+    <div class="image-zone">
+      <img *ngIf="formGroup.value.imgLink" (load)="onImageLoad()" [attr.src]="formGroup.value.imgLink">
+    </div>
+    <button [disabled]="formGroup.invalid || !imageLoaded" class="btn btn-primary" [clrLoading]="isLoading">저장</button>
+  </section>
+</form>

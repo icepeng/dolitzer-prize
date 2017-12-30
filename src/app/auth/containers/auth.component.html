@@ -1,5 +1,5 @@
 <section class="home">
   <h1>The Dolitzer Prize</h1>
   <button *ngIf="!(isLoggedIn$ | async)" (click)="auth()" class="btn btn-primary">Log in With BLIZZARD</button>
-  <button *ngIf="isLoggedIn$ | async" [routerLink]="['/', 'gallary']" class="btn btn-primary">Enter</button>
+  <button *ngIf="isLoggedIn$ | async" [routerLink]="['/', 'gallery']" class="btn btn-primary">Enter</button>
 </section>

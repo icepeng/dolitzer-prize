@@ -2,6 +2,7 @@ import { User } from '../../auth/models/user';
 
 export interface Photo {
   id: number;
+  createTime: string;
   title: string;
   imgLink: string;
   like: number;

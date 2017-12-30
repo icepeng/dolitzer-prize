@@ -11,6 +11,7 @@ import {
   LoginSuccess,
 } from '../actions/auth';
 import { AuthService } from '../services/auth.service';
+import * as PhotoAction from '../..//photo/actions/photo';
 
 @Injectable()
 export class AuthEffects {
@@ -29,10 +30,11 @@ export class AuthEffects {
       ),
     );
 
-  @Effect({ dispatch: false })
-  loginSuccess$ = this.actions$
-    .ofType(AuthActionTypes.LoginSuccess)
-    .pipe(tap(() => this.router.navigate(['/gallary'])));
+  @Effect()
+  loginSuccess$ = this.actions$.ofType(AuthActionTypes.LoginSuccess).pipe(
+    // tap(() => this.router.navigate(['/gallery'])),
+    map(() => new PhotoAction.Load()),
+  );
 
   @Effect({ dispatch: false })
   loginRedirect$ = this.actions$

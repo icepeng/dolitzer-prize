@@ -16,13 +16,13 @@ export class Init implements Action {
 export class Submit implements Action {
   readonly type = UploadActionTypes.Submit;
 
-  constructor(public payload: { upload: Upload }) {}
+  constructor(public payload: Upload) {}
 }
 
 export class SubmitSuccess implements Action {
   readonly type = UploadActionTypes.SubmitSuccess;
 
-  constructor(public payload: { id: number }) {}
+  constructor(public payload: number) {}
 }
 
 export class SubmitFailure implements Action {

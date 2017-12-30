@@ -1,4 +1,2 @@
-<p>
-  upload works!
-</p>
-{{ error$ | async | json }}
+<h1>업로드</h1>
+<app-upload-form [isLoading]="isLoading$ | async" (save)="onSubmit($event)"></app-upload-form>

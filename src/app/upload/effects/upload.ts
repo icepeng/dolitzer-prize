@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
+import { catchError, switchMap, map } from 'rxjs/operators';
 
 import {
   Submit,
@@ -15,19 +15,24 @@ import { UploadService } from '../services/upload.service';
 @Injectable()
 export class UploadEffects {
   @Effect()
-  load$ = this.actions$
+  submit$ = this.actions$
     .ofType(UploadActionTypes.Submit)
     .pipe(
       map((action: Submit) => action.payload),
-      exhaustMap(payload =>
+      switchMap(payload =>
         this.uploadService
-          .submit(payload.upload)
+          .submit(payload)
           .pipe(
-            map(id => new SubmitSuccess({ id })),
+            map(id => new SubmitSuccess(id)),
             catchError(err => of(new SubmitFailure(err))),
           ),
       ),
     );
+
+  @Effect({ dispatch: false })
+  submitSucess$ = this.actions$
+    .ofType(UploadActionTypes.SubmitSuccess)
+    .pipe(map(() => this.router.navigate(['/', 'gallery'])));
 
   constructor(
     private actions$: Actions,

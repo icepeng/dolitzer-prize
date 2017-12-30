@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,7 +11,6 @@ import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
-import { TokenInterceptor } from './auth/services/token.interceptor';
 import { APP_CONFIG, appConfig } from './config';
 import { PhotoModule } from './photo/photo.module';
 import { metaReducers, reducers } from './reducers';
@@ -32,14 +31,7 @@ import { appRoutes } from './routes';
     StoreRouterConnectingModule,
     EffectsModule.forRoot([]),
   ],
-  providers: [
-    { provide: APP_CONFIG, useValue: appConfig },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [{ provide: APP_CONFIG, useValue: appConfig }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
