@@ -1,0 +1,32 @@
+
+<form [formGroup]="formGroup" class="form">
+    <section class="form-block">
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <div class="select">
+                    <select formControlName="year">
+                        <option [ngValue]="2017">2017년</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="select">
+                    <select formControlName="month">
+                        <option [ngValue]="0">1월</option>
+                        <option [ngValue]="1">2월</option>
+                        <option [ngValue]="2">3월</option>
+                        <option [ngValue]="3">4월</option>
+                        <option [ngValue]="4">5월</option>
+                        <option [ngValue]="5">6월</option>
+                        <option [ngValue]="6">7월</option>
+                        <option [ngValue]="7">8월</option>
+                        <option [ngValue]="8">9월</option>
+                        <option [ngValue]="9">10월</option>
+                        <option [ngValue]="10">11월</option>
+                        <option [ngValue]="11">12월</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>

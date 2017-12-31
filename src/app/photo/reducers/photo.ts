@@ -20,7 +20,7 @@ export function reducer(state = initialState, action: PhotoActions): State {
   switch (action.type) {
     case PhotoActionTypes.LoadSuccess: {
       return {
-        ...adapter.addAll(action.payload, state),
+        ...adapter.addMany(action.payload, state),
         selectedPhotoId: state.selectedPhotoId,
       };
     }

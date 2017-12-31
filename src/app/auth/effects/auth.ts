@@ -30,11 +30,11 @@ export class AuthEffects {
       ),
     );
 
-  @Effect()
-  loginSuccess$ = this.actions$.ofType(AuthActionTypes.LoginSuccess).pipe(
+  // @Effect()
+  // loginSuccess$ = this.actions$.ofType(AuthActionTypes.LoginSuccess).pipe(
     // tap(() => this.router.navigate(['/gallery'])),
-    map(() => new PhotoAction.Load()),
-  );
+    // map(() => new PhotoAction.Load()),
+  // );
 
   @Effect({ dispatch: false })
   loginRedirect$ = this.actions$

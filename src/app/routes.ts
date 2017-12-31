@@ -7,6 +7,13 @@ export const appRoutes: Routes = [
     path: 'gallery',
     canActivate: [AuthGuard],
     loadChildren: './gallery/gallery.module#GalleryModule',
+    data: { state: 'gallery' }
+  },
+  {
+    path: 'history',
+    canActivate: [AuthGuard],
+    loadChildren: './history/history.module#HistoryModule',
+    data: { state: 'history' }
   },
   {
     path: 'upload',

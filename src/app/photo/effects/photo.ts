@@ -4,7 +4,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { LoadFailure, LoadSuccess, PhotoActionTypes } from '../actions/photo';
+import { Load, LoadFailure, LoadOne, LoadSuccess, PhotoActionTypes } from '../actions/photo';
 import { PhotoService } from '../services/photo.service';
 
 @Injectable()
@@ -13,11 +13,27 @@ export class PhotoEffects {
   load$ = this.actions$
     .ofType(PhotoActionTypes.Load)
     .pipe(
-      switchMap(() =>
+      map((action: Load) => action.payload),
+      switchMap(payload =>
         this.photoService
-          .getAll()
+          .getAll(payload)
           .pipe(
             map(photos => new LoadSuccess(photos)),
+            catchError(err => of(new LoadFailure(err))),
+          ),
+      ),
+    );
+
+  @Effect()
+  loadOne$ = this.actions$
+    .ofType(PhotoActionTypes.LoadOne)
+    .pipe(
+      map((action: LoadOne) => action.payload),
+      switchMap(payload =>
+        this.photoService
+          .getOne(payload)
+          .pipe(
+            map(photo => new LoadSuccess([photo])),
             catchError(err => of(new LoadFailure(err))),
           ),
       ),

@@ -1,9 +1,11 @@
 import { Action } from '@ngrx/store';
 
+import { Period } from '../models/period';
 import { Photo } from '../models/photo';
 
 export enum PhotoActionTypes {
   Load = '[Photo] Load',
+  LoadOne = '[Photo] Load One',
   LoadSuccess = '[Photo] Load Success',
   LoadFailure = '[Photo] Load Failure',
   Select = '[Photo] Select',
@@ -11,6 +13,14 @@ export enum PhotoActionTypes {
 
 export class Load implements Action {
   readonly type = PhotoActionTypes.Load;
+
+  constructor(public payload: Period) {}
+}
+
+export class LoadOne implements Action {
+  readonly type = PhotoActionTypes.LoadOne;
+
+  constructor(public payload: number) {}
 }
 
 export class LoadSuccess implements Action {
@@ -31,4 +41,4 @@ export class Select implements Action {
   constructor(public payload: number) {}
 }
 
-export type PhotoActions = Load | LoadSuccess | LoadFailure | Select;
+export type PhotoActions = Load | LoadOne | LoadSuccess | LoadFailure | Select;

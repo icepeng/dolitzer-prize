@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+import * as fromPhoto from '../../photo/reducers';
 import * as fromRoot from '../../reducers';
 import * as fromGallery from './gallery';
 
@@ -25,4 +26,41 @@ export const getGalleryStatusState = createSelector(
 export const getPage = createSelector(
   getGalleryStatusState,
   fromGallery.getPage,
+);
+
+export const getGalleryPhotos = createSelector(fromPhoto.getAllPhotos, photos =>
+  photos.filter(
+    photo =>
+      photo.period.month === new Date().getMonth() &&
+      photo.period.year === new Date().getFullYear(),
+  ),
+);
+
+export const getGalleryTotal = createSelector(
+  getGalleryPhotos,
+  photos => photos.length,
+);
+
+export const getIndex = createSelector(
+  getGalleryPhotos,
+  fromPhoto.getSelectedPhotoId,
+  (photos, id) => {
+    const index = photos.findIndex(photo => photo.id === id);
+    if (index === -1) {
+      return null;
+    }
+    return index;
+  },
+);
+
+export const getNextId = createSelector(
+  getGalleryPhotos,
+  getIndex,
+  (photos, index) => (photos[index + 1] ? photos[index + 1].id : null),
+);
+
+export const getPrevId = createSelector(
+  getGalleryPhotos,
+  getIndex,
+  (photos, index) => (photos[index - 1] ? photos[index - 1].id : null),
 );

@@ -3,7 +3,7 @@ import { HttpObserve } from '@angular/common/http/src/client';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import * as fromAuth from '../../auth/reducers';
 
@@ -35,6 +35,7 @@ export class HttpAuth {
         ? options.headers
         : new HttpHeaders(options.headers || {});
     return this.token$.pipe(
+      take(1),
       map(token => ({
         ...options,
         headers: headers.append(HEADER_NAME, HEADER_PREFIX + token),

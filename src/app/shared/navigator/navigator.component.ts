@@ -21,8 +21,8 @@ export class NavigatorComponent implements OnInit, OnChanges {
   @Output() prev = new EventEmitter<void>();
 
   totalPage: number;
-  isFirst: boolean;
-  isLast: boolean;
+  isFirst: true | null;
+  isLast: true | null;
 
   constructor() {}
 

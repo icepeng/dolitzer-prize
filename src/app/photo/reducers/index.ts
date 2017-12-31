@@ -1,4 +1,5 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import * as fromRoot from '../../reducers';
 import * as fromPhoto from './photo';
 

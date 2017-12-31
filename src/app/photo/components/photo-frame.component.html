@@ -1,0 +1,21 @@
+<div class="photo-frame">
+    <img [attr.src]="photo.imgLink">
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="photo-caption">
+            <div class="title">{{ photo.title }}</div>
+            <div class="description">{{ photo.user.battletag }}, {{ photo.createTime | date: 'yyyy.MM.dd' }}</div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="action-buttons">
+            <button [attr.disabled]="isFirst" (click)="prev.emit()" class="btn btn-link">
+                <clr-icon shape="caret" dir="left"></clr-icon>Prev</button>
+                <span>{{ index + 1 }} / {{ total }}</span>
+            <button [attr.disabled]="isLast" (click)="next.emit()" class="btn btn-link">Next
+                <clr-icon shape="caret" dir="right"></clr-icon>
+            </button>
+        </div>
+    </div>
+</div>

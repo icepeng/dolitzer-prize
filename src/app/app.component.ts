@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
+import { combineLatest, filter, take } from 'rxjs/operators';
 
 import * as Auth from './auth/actions/auth';
-import * as fromRoot from './reducers';
 import * as fromAuth from './auth/reducers';
+import * as PhotoAction from './photo/actions/photo';
+import * as fromRoot from './reducers';
 
 @Component({
   selector: 'my-app',
@@ -14,12 +16,36 @@ import * as fromAuth from './auth/reducers';
 })
 export class AppComponent implements OnInit {
   @ViewChild('content') content;
-  user$ = this.store.select(fromAuth.getUser);
   isLoggedIn$ = this.store.select(fromAuth.getLoggedIn);
+  battletag$ = this.store.select(fromAuth.getBattletag);
 
   constructor(private router: Router, private store: Store<fromRoot.State>) {}
 
   ngOnInit() {
+    this.isLoggedIn$
+      .pipe(take(1), filter(isLoggedIn => !isLoggedIn))
+      .subscribe(() => {
+        const localToken = localStorage.getItem('token');
+        if (!localToken) {
+          return;
+        }
+        this.store.dispatch(new Auth.Login(localToken));
+      });
+
+    timer(0, 1000 * 60)
+      .pipe(
+        combineLatest(this.isLoggedIn$),
+        filter(([_, isLoggedIn]) => isLoggedIn),
+      )
+      .subscribe(() => {
+        this.store.dispatch(
+          new PhotoAction.Load({
+            month: new Date().getMonth(),
+            year: new Date().getFullYear(),
+          }),
+        );
+      });
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(evt => (this.content.nativeElement.scrollTop = 0));

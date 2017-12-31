@@ -1,12 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest, map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../config';
-import * as PhotoAction from '../../photo/actions/photo';
-import { Photo } from '../../photo/models/photo';
-import * as fromPhoto from '../../photo/reducers';
 import * as GalleryAction from '../actions/gallery';
 import * as fromGallery from '../reducers';
 
@@ -16,28 +11,17 @@ import * as fromGallery from '../reducers';
   styleUrls: ['./gallery.component.scss'],
 })
 export class GalleryComponent implements OnInit {
-  photos$ = this.store.select(fromPhoto.getAllPhotos);
-  page$ = this.store.select(fromGallery.getPage);
-  total$ = this.store.select(fromPhoto.getTotalPhotos);
-  displayPhotos$: Observable<Photo[]>;
   perPage = this.appConfig.perPage;
+  photos$ = this.store.select(fromGallery.getGalleryPhotos);
+  page$ = this.store.select(fromGallery.getPage);
+  total$ = this.store.select(fromGallery.getGalleryTotal);
 
   constructor(
     private store: Store<fromGallery.GalleryState>,
     @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
-  ngOnInit() {
-    this.displayPhotos$ = this.page$.pipe(
-      combineLatest(this.photos$),
-      map(([page, photos]) =>
-        photos.slice(
-          (page - 1) * this.appConfig.perPage,
-          page * this.appConfig.perPage,
-        ),
-      ),
-    );
-  }
+  ngOnInit() {}
 
   next() {
     this.store.dispatch(new GalleryAction.NextPage());

@@ -1,3 +1,4 @@
+import { filter, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -18,11 +19,6 @@ export class AuthComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const localToken = localStorage.getItem('token');
-    if (!localToken) {
-      return;
-    }
-    this.store.dispatch(new Auth.Login(localToken));
   }
 
   auth() {

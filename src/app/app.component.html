@@ -6,20 +6,30 @@
         <span class="title">Dolitzer Prize</span>
       </a>
     </div>
-      <div class="header-nav" [clr-nav-level]="1">
-        <a class="nav-link" href="#" [routerLink]="['/home']" routerLinkActive="active"><span class="nav-text">Home</span></a>
-        <a class="nav-link" href="#" [routerLink]="['/gallery']" routerLinkActive="active"><span class="nav-text">갤러리</span></a>
-        <a class="nav-link" href="#" [routerLink]="['/upload']" routerLinkActive="active"><span class="nav-text">업로드</span></a>
-      </div>
-    <div *ngIf="isLoggedIn$ | async" class="header-actions"><clr-dropdown>
+    <div class="header-nav" [clr-nav-level]="1">
+      <a class="nav-link" href="#" [routerLink]="['/home']" routerLinkActive="active">
+        <span class="nav-text">Home</span>
+      </a>
+      <a class="nav-link" href="#" [routerLink]="['/history']" routerLinkActive="active">
+        <span class="nav-text">역사</span>
+      </a>
+      <a class="nav-link" href="#" [routerLink]="['/gallery']" routerLinkActive="active">
+        <span class="nav-text">갤러리</span>
+      </a>
+      <a class="nav-link" href="#" [routerLink]="['/upload']" routerLinkActive="active">
+        <span class="nav-text">업로드</span>
+      </a>
+    </div>
+    <div *ngIf="isLoggedIn$ | async" class="header-actions">
+      <clr-dropdown>
         <button class="nav-text" clrDropdownTrigger>
-            {{ (user$ | async).battletag }}
-            <clr-icon shape="caret down"></clr-icon>
+          {{ (battletag$ | async) }}
+          <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-            <a clrDropdownItem (click)="logout()">Log out</a>
+          <a clrDropdownItem (click)="logout()">Log out</a>
         </clr-dropdown-menu>
-    </clr-dropdown>
+      </clr-dropdown>
     </div>
   </clr-header>
   <div class="content-container">
