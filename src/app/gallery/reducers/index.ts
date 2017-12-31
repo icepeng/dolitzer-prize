@@ -1,3 +1,4 @@
+import { appConfig } from '../../config';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromPhoto from '../../photo/reducers';
@@ -29,11 +30,23 @@ export const getPage = createSelector(
 );
 
 export const getGalleryPhotos = createSelector(fromPhoto.getAllPhotos, photos =>
-  photos.filter(
-    photo =>
-      photo.period.month === new Date().getMonth() &&
-      photo.period.year === new Date().getFullYear(),
-  ),
+  photos
+    .filter(
+      photo =>
+        photo.period.month === new Date().getMonth() &&
+        photo.period.year === new Date().getFullYear(),
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.createTime).getTime() - new Date(a.createTime).getTime(),
+    ),
+);
+
+export const getPagePhotos = createSelector(
+  getGalleryPhotos,
+  getPage,
+  (photos, page) =>
+    photos.slice((page - 1) * appConfig.perPage, page * appConfig.perPage),
 );
 
 export const getGalleryTotal = createSelector(

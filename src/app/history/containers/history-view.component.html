@@ -1,0 +1,6 @@
+<h1>역사
+    <a [routerLink]="['../']" class="label label-light-blue clickable">
+        돌아가기
+    </a>
+</h1>
+<app-photo-frame [index]="index$ | async" [total]="total$ | async" (prev)="prev()" (next)="next()" [photo]="photo$ | async"></app-photo-frame>

@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 import { APP_CONFIG, AppConfig } from '../../config';
@@ -16,7 +16,7 @@ import * as fromHistory from '../reducers';
 })
 export class HistoryComponent implements OnInit, OnDestroy {
   perPage = this.appConfig.perPage;
-  photos$ = this.store.select(fromHistory.getHistoryPhotos);
+  photos$ = this.store.select(fromHistory.getPagePhotos);
   page$ = this.store.select(fromHistory.getPage);
   total$ = this.store.select(fromHistory.getHistoryTotal);
   period$ = this.store.select(fromHistory.getPeriod);
@@ -29,8 +29,14 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.period$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(period => this.store.dispatch(new PhotoAction.Load(period)));
+      .pipe(
+        withLatestFrom(this.store.select(fromHistory.isVisited)),
+        filter(([period, isVisited]) => !isVisited),
+        takeUntil(this.unsubscribe$),
+      )
+      .subscribe(([period]) =>
+        this.store.dispatch(new PhotoAction.Load(period)),
+      );
   }
 
   onPeriodChange(period: Period) {

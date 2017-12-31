@@ -12,7 +12,7 @@ import * as fromGallery from '../reducers';
 })
 export class GalleryComponent implements OnInit {
   perPage = this.appConfig.perPage;
-  photos$ = this.store.select(fromGallery.getGalleryPhotos);
+  photos$ = this.store.select(fromGallery.getPagePhotos);
   page$ = this.store.select(fromGallery.getPage);
   total$ = this.store.select(fromGallery.getGalleryTotal);
 

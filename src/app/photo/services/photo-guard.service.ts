@@ -6,6 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import * as Photo from '../actions/photo';
+import * as History from '../../history/actions/history';
 import * as fromPhoto from '../reducers';
 
 @Injectable()

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
-import { catchError, switchMap, map } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
+import * as PhotoAction from '../../photo/actions/photo';
 import {
   Submit,
   SubmitFailure,
@@ -29,10 +30,17 @@ export class UploadEffects {
       ),
     );
 
-  @Effect({ dispatch: false })
-  submitSucess$ = this.actions$
-    .ofType(UploadActionTypes.SubmitSuccess)
-    .pipe(map(() => this.router.navigate(['/', 'gallery'])));
+  @Effect()
+  submitSucess$ = this.actions$.ofType(UploadActionTypes.SubmitSuccess).pipe(
+    tap(() => this.router.navigate(['/', 'gallery'])),
+    map(
+      () =>
+        new PhotoAction.Load({
+          month: new Date().getMonth(),
+          year: new Date().getFullYear(),
+        }),
+    ),
+  );
 
   constructor(
     private actions$: Actions,
