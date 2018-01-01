@@ -21,11 +21,20 @@ export class UserService {
       .get<UserFromApi>(`${this.appConfig.apiAddress}/users/${id}`)
       .pipe(
         map(user => {
-          const photos = user.photos;
-          const likedPhotos = user.likedPhotos;
-          const userDetail = {
+          const userBase = {
             id: user.id,
             battletag: user.battletag,
+          };
+          const photos = user.photos.map(photo => ({
+            ...photo,
+            user: userBase,
+          }));
+          const likedPhotos = user.likedPhotos.map(photo => ({
+            ...photo,
+            user: userBase,
+          }));
+          const userDetail = {
+            ...userBase,
             photoIds: photos.map(photo => photo.id),
             likedPhotoIds: likedPhotos.map(photo => photo.id),
           };

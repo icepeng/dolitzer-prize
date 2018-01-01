@@ -1,13 +1,16 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from 'app/shared/shared.module';
 
+import { PhotoModule } from '../photo/photo.module';
+import { UserComponent } from './containers/user.component';
 import { reducers } from './reducers';
 import { UserService } from './services/user.service';
 
 @NgModule({
-  imports: [SharedModule],
-  declarations: [],
+  imports: [SharedModule, PhotoModule],
+  declarations: [UserComponent],
 })
 export class UserModule {
   static forRoot(): ModuleWithProviders {
@@ -21,6 +24,7 @@ export class UserModule {
 @NgModule({
   imports: [
     UserModule,
+    RouterModule.forChild([{ path: 'users/:id', component: UserComponent }]),
     StoreModule.forFeature('user', reducers),
     // EffectsModule.forFeature([]),
   ],

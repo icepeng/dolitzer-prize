@@ -1,3 +1,4 @@
+import { Photo } from '../../photo/models/photo';
 import { Action } from '@ngrx/store';
 
 import { UserDetail } from '../../user/models/user';
@@ -19,7 +20,9 @@ export class Login implements Action {
 export class LoginSuccess implements Action {
   readonly type = AuthActionTypes.LoginSuccess;
 
-  constructor(public payload: { user: UserDetail }) {}
+  constructor(
+    public payload: { user: UserDetail; photos: Photo[]; likedPhotos: Photo[] },
+  ) {}
 }
 
 export class LoginFailure implements Action {

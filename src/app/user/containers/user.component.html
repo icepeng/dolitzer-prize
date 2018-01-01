@@ -1,0 +1,16 @@
+<h1>{{ battletag$ | async }}</h1>
+<clr-tabs>
+  <clr-tab>
+    <button clrTabLink>Photos</button>
+    <clr-tab-content *clrIfActive>
+      <app-photo-list [photos]="photos$ | async"></app-photo-list>
+    </clr-tab-content>
+  </clr-tab>
+
+  <clr-tab>
+    <button clrTabLink>Liked Photos</button>
+    <clr-tab-content *clrIfActive>
+      <app-photo-list [photos]="likedPhotos$ | async"></app-photo-list>
+    </clr-tab-content>
+  </clr-tab>
+</clr-tabs>

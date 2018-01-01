@@ -43,6 +43,15 @@ export class AppComponent implements OnInit {
       .subscribe(evt => (this.content.nativeElement.scrollTop = 0));
   }
 
+  myPage() {
+    this.store
+      .select(fromUser.getAuthedUserId)
+      .pipe(take(1))
+      .subscribe(id => {
+        this.router.navigate(['/', 'users', id]);
+      });
+  }
+
   logout() {
     this.store.dispatch(new Auth.Logout());
   }

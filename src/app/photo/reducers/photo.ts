@@ -1,3 +1,5 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+
 import {
   GalleryActions,
   GalleryActionTypes,
@@ -6,8 +8,7 @@ import {
   HistoryActions,
   HistoryActionTypes,
 } from '../../history/actions/history';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-
+import { UserActions, UserActionTypes } from '../../user/actions/user';
 import { PhotoActions, PhotoActionTypes } from '../actions/photo';
 import { Photo } from '../models/photo';
 
@@ -26,7 +27,7 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(
   state = initialState,
-  action: PhotoActions | HistoryActions | GalleryActions,
+  action: PhotoActions | HistoryActions | GalleryActions | UserActions,
 ): State {
   switch (action.type) {
     case PhotoActionTypes.LoadSuccess: {
@@ -46,6 +47,16 @@ export function reducer(
     case HistoryActionTypes.LoadSuccess: {
       return {
         ...adapter.addMany(action.payload.photos, state),
+        selectedPhotoId: state.selectedPhotoId,
+      };
+    }
+
+    case UserActionTypes.LoadSuccess: {
+      return {
+        ...adapter.addMany(
+          [...action.payload.photos, ...action.payload.likedPhotos],
+          state,
+        ),
         selectedPhotoId: state.selectedPhotoId,
       };
     }
