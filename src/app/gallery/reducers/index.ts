@@ -34,7 +34,7 @@ export const getPage = createSelector(
 export const getGalleryPhotos = createSelector(
   fromPhoto.getPhotoEntities,
   getGalleryStatusState,
-  (entities, state) => state.photoIds.map(id => entities[id])
+  (entities, state) => state.photoIds.map(id => entities[id]),
 );
 
 export const getGalleryPhotosTotal = createSelector(
@@ -66,11 +66,11 @@ export const getIndex = createSelector(
 export const getNextId = createSelector(
   getGalleryPhotos,
   getIndex,
-  (photos, index) => (photos[index + 1] ? photos[index + 1].id : null),
+  (photos, index) => index !== null && photos[index + 1] && photos[index + 1].id,
 );
 
 export const getPrevId = createSelector(
   getGalleryPhotos,
   getIndex,
-  (photos, index) => (photos[index - 1] ? photos[index - 1].id : null),
+  (photos, index) => index !== null && photos[index - 1] && photos[index - 1].id,
 );

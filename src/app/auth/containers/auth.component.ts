@@ -18,8 +18,7 @@ export class AuthComponent implements OnInit {
     private store: Store<fromAuth.AuthState>,
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   auth() {
     window.open(
@@ -30,7 +29,7 @@ export class AuthComponent implements OnInit {
     window.addEventListener('message', this.receiveMessage);
   }
 
-  receiveMessage = event => {
+  receiveMessage = (event: any) => {
     this.store.dispatch(new Auth.Login(event.data));
   };
 }

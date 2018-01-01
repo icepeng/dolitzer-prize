@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
+import { AuthGuard } from '../auth/services/auth-guard.service';
 import { PhotoModule } from '../photo/photo.module';
 import { PhotoGuard } from '../photo/services/photo-guard.service';
 import { SharedModule } from '../shared/shared.module';
@@ -29,6 +30,7 @@ export class GalleryModule {
     RouterModule.forChild([
       {
         path: 'gallery',
+        canActivate: [AuthGuard],
         children: [
           { path: '', component: GalleryComponent },
           {

@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { UserDetail, UserFromApi } from '../models/user';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,15 +14,27 @@ export class UserService {
     @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
-  getPhotos(id: number): Observable<Photo[]> {
-    return this.http.get<Photo[]>(
-      `${this.appConfig.apiAddress}/users/${id}/photos`,
-    );
-  }
-
-  getLikedPhotos(id: number): Observable<Photo[]> {
-    return this.http.get<Photo[]>(
-      `${this.appConfig.apiAddress}/users/${id}/liked-photos`,
-    );
+  getUser(
+    id: string,
+  ): Observable<{ user: UserDetail; photos: Photo[]; likedPhotos: Photo[] }> {
+    return this.http
+      .get<UserFromApi>(`${this.appConfig.apiAddress}/users/${id}`)
+      .pipe(
+        map(user => {
+          const photos = user.photos;
+          const likedPhotos = user.likedPhotos;
+          const userDetail = {
+            id: user.id,
+            battletag: user.battletag,
+            photoIds: photos.map(photo => photo.id),
+            likedPhotoIds: likedPhotos.map(photo => photo.id),
+          };
+          return {
+            user: userDetail,
+            photos,
+            likedPhotos,
+          };
+        }),
+      );
   }
 }

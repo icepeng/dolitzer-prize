@@ -98,11 +98,11 @@ export const getIndex = createSelector(
 export const getNextId = createSelector(
   getSelectedPhotos,
   getIndex,
-  (photos, index) => (photos[index + 1] ? photos[index + 1].id : null),
+  (photos, index) => index !== null && photos[index + 1] && photos[index + 1].id,
 );
 
 export const getPrevId = createSelector(
   getSelectedPhotos,
   getIndex,
-  (photos, index) => (photos[index - 1] ? photos[index - 1].id : null),
+  (photos, index) => index !== null && photos[index - 1] && photos[index - 1].id,
 );

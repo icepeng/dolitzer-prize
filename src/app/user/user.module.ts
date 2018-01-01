@@ -1,11 +1,28 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import { SharedModule } from 'app/shared/shared.module';
 
-import { SharedModule } from '../shared/shared.module';
-import { UserPhotosComponent } from './containers/user-photos.component';
-import { UserLikedPhotosComponent } from './containers/user-liked-photos.component';
+import { reducers } from './reducers';
+import { UserService } from './services/user.service';
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [UserPhotosComponent, UserLikedPhotosComponent],
+  declarations: [],
 })
-export class UserModule {}
+export class UserModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: RootUserModule,
+      providers: [UserService],
+    };
+  }
+}
+
+@NgModule({
+  imports: [
+    UserModule,
+    StoreModule.forFeature('user', reducers),
+    // EffectsModule.forFeature([]),
+  ],
+})
+export class RootUserModule {}

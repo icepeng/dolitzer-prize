@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map, take } from 'rxjs/operators';
 
-import * as fromAuth from '../../auth/reducers';
+import * as fromUser from '../../user/reducers';
 import { HttpAuth } from '../../auth/services/http-auth.service';
 import { APP_CONFIG, AppConfig } from '../../config';
 import { Period } from '../models/period';
@@ -13,7 +13,7 @@ import { Photo } from '../models/photo';
 export class PhotoService {
   constructor(
     private http: HttpAuth,
-    private store: Store<fromAuth.AuthState>,
+    private store: Store<fromUser.UserState>,
     @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
@@ -33,11 +33,11 @@ export class PhotoService {
   }
 
   like(id: number) {
-    return this.store.select(fromAuth.getUser).pipe(
+    return this.store.select(fromUser.getAuthedUserId).pipe(
       take(1),
-      map(user =>
+      map(userId =>
         this.http.post(
-          `${this.appConfig.apiAddress}/users/${user.id}/liked-photos`,
+          `${this.appConfig.apiAddress}/users/${userId}/liked-photos`,
           {
             id,
           },

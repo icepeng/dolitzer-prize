@@ -21,13 +21,6 @@ export const selectAuthStatusState = createSelector(
   (state: AuthState) => state.status,
 );
 
-export const getUser = createSelector(selectAuthStatusState, fromAuth.getUser);
-
-export const getBattletag = createSelector(
-  getUser,
-  user => user && user.battletag,
-);
-
 export const getToken = createSelector(
   selectAuthStatusState,
   fromAuth.getToken,

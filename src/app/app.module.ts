@@ -16,6 +16,7 @@ import { GalleryModule } from './gallery/gallery.module';
 import { PhotoModule } from './photo/photo.module';
 import { metaReducers, reducers } from './reducers';
 import { appRoutes } from './routes';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { appRoutes } from './routes';
     FormsModule,
     HttpClientModule,
     ClarityModule,
+    UserModule.forRoot(),
     AuthModule.forRoot(),
     PhotoModule.forRoot(),
     GalleryModule.forRoot(),

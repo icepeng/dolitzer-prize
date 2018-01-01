@@ -1,34 +1,35 @@
-import { User } from '../../user/models/user';
 import { AuthActions, AuthActionTypes } from '../actions/auth';
 
 export interface State {
-  user: User | null;
-  token: string;
+  token: string | null;
   loggedIn: boolean;
 }
 
 export const initialState: State = {
-  user: null,
   token: null,
   loggedIn: false,
 };
 
 export function reducer(state = initialState, action: AuthActions): State {
   switch (action.type) {
-    case AuthActionTypes.LoginSuccess: {
-      const token = action.payload.token;
-      localStorage.setItem('token', token);
+    case AuthActionTypes.Login: {
+      const token = action.payload;
       return {
+        ...state,
         token,
-        user: action.payload.user,
+      };
+    }
+
+    case AuthActionTypes.LoginSuccess: {
+      return {
+        ...state,
         loggedIn: true,
       };
     }
 
+    case AuthActionTypes.LoginFailure:
     case AuthActionTypes.Logout: {
-      localStorage.removeItem('token');
       return {
-        user: null,
         token: null,
         loggedIn: false,
       };
@@ -39,8 +40,6 @@ export function reducer(state = initialState, action: AuthActions): State {
     }
   }
 }
-
-export const getUser = (state: State) => state.user;
 
 export const getToken = (state: State) => state.token;
 
