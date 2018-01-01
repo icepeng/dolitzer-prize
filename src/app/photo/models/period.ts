@@ -1,4 +1,4 @@
 export interface Period {
-    month: number;
-    year: number;
+  month: number;
+  year: number;
 }

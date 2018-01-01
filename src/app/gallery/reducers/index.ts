@@ -19,6 +19,8 @@ export const reducers = {
 
 export const getGalleryState = createFeatureSelector<GalleryState>('gallery');
 
+// Gallery
+
 export const getGalleryStatusState = createSelector(
   getGalleryState,
   (state: GalleryState) => state.status,
@@ -29,17 +31,15 @@ export const getPage = createSelector(
   fromGallery.getPage,
 );
 
-export const getGalleryPhotos = createSelector(fromPhoto.getAllPhotos, photos =>
-  photos
-    .filter(
-      photo =>
-        photo.period.month === new Date().getMonth() &&
-        photo.period.year === new Date().getFullYear(),
-    )
-    .sort(
-      (a, b) =>
-        new Date(b.createTime).getTime() - new Date(a.createTime).getTime(),
-    ),
+export const getGalleryPhotos = createSelector(
+  fromPhoto.getPhotoEntities,
+  getGalleryStatusState,
+  (entities, state) => state.photoIds.map(id => entities[id])
+);
+
+export const getGalleryPhotosTotal = createSelector(
+  getGalleryPhotos,
+  photos => photos.length,
 );
 
 export const getPagePhotos = createSelector(
@@ -49,10 +49,7 @@ export const getPagePhotos = createSelector(
     photos.slice((page - 1) * appConfig.perPage, page * appConfig.perPage),
 );
 
-export const getGalleryTotal = createSelector(
-  getGalleryPhotos,
-  photos => photos.length,
-);
+// View
 
 export const getIndex = createSelector(
   getGalleryPhotos,

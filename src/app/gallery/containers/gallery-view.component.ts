@@ -16,7 +16,7 @@ import * as fromGallery from '../reducers';
 export class GalleryViewComponent implements OnInit, OnDestroy {
   photo$ = this.store.select(fromPhoto.getSelectedPhoto);
   index$ = this.store.select(fromGallery.getIndex);
-  total$ = this.store.select(fromGallery.getGalleryTotal);
+  total$ = this.store.select(fromGallery.getGalleryPhotosTotal);
   subscription$: Subscription;
 
   constructor(

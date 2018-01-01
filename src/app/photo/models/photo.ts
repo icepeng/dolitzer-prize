@@ -1,15 +1,10 @@
-import { User } from '../../auth/models/user';
-import { Period } from './period';
+import { User } from '../../user/models/user';
 
-export interface PhotoFromApi {
+export interface Photo {
   id: number;
   createTime: string;
   title: string;
   imgLink: string;
   like: number;
   user: User;
-}
-
-export interface Photo extends PhotoFromApi {
-  period: Period;
 }

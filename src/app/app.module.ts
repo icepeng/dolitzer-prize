@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { APP_CONFIG, appConfig } from './config';
+import { GalleryModule } from './gallery/gallery.module';
 import { PhotoModule } from './photo/photo.module';
 import { metaReducers, reducers } from './reducers';
 import { appRoutes } from './routes';
@@ -26,6 +27,7 @@ import { appRoutes } from './routes';
     ClarityModule,
     AuthModule.forRoot(),
     PhotoModule.forRoot(),
+    GalleryModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule,

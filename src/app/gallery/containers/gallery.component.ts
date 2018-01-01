@@ -14,7 +14,7 @@ export class GalleryComponent implements OnInit {
   perPage = this.appConfig.perPage;
   photos$ = this.store.select(fromGallery.getPagePhotos);
   page$ = this.store.select(fromGallery.getPage);
-  total$ = this.store.select(fromGallery.getGalleryTotal);
+  total$ = this.store.select(fromGallery.getGalleryPhotosTotal);
 
   constructor(
     private store: Store<fromGallery.GalleryState>,

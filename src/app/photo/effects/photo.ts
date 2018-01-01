@@ -4,26 +4,22 @@ import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { Load, LoadFailure, LoadOne, LoadSuccess, PhotoActionTypes } from '../actions/photo';
+import {
+  Like,
+  LikeActionTypes,
+  LikeFailure,
+  LikeSuccess,
+} from '../actions/like';
+import {
+  LoadFailure,
+  LoadOne,
+  LoadSuccess,
+  PhotoActionTypes,
+} from '../actions/photo';
 import { PhotoService } from '../services/photo.service';
 
 @Injectable()
 export class PhotoEffects {
-  @Effect()
-  load$ = this.actions$
-    .ofType(PhotoActionTypes.Load)
-    .pipe(
-      map((action: Load) => action.payload),
-      switchMap(payload =>
-        this.photoService
-          .getAll(payload)
-          .pipe(
-            map(photos => new LoadSuccess(photos)),
-            catchError(err => of(new LoadFailure(err))),
-          ),
-      ),
-    );
-
   @Effect()
   loadOne$ = this.actions$
     .ofType(PhotoActionTypes.LoadOne)
@@ -33,8 +29,23 @@ export class PhotoEffects {
         this.photoService
           .getOne(payload)
           .pipe(
-            map(photo => new LoadSuccess([photo])),
+            map(photo => new LoadSuccess(photo)),
             catchError(err => of(new LoadFailure(err))),
+          ),
+      ),
+    );
+
+  @Effect()
+  like$ = this.actions$
+    .ofType(LikeActionTypes.Like)
+    .pipe(
+      map((action: Like) => action.payload),
+      switchMap(payload =>
+        this.photoService
+          .like(payload)
+          .pipe(
+            map(photo => new LikeSuccess(payload)),
+            catchError(err => of(new LikeFailure(err))),
           ),
       ),
     );

@@ -4,7 +4,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
-import * as PhotoAction from '../../photo/actions/photo';
+import * as GalleryAction from '../../gallery/actions/gallery';
 import {
   Submit,
   SubmitFailure,
@@ -31,16 +31,12 @@ export class UploadEffects {
     );
 
   @Effect()
-  submitSucess$ = this.actions$.ofType(UploadActionTypes.SubmitSuccess).pipe(
-    tap(() => this.router.navigate(['/', 'gallery'])),
-    map(
-      () =>
-        new PhotoAction.Load({
-          month: new Date().getMonth(),
-          year: new Date().getFullYear(),
-        }),
-    ),
-  );
+  submitSucess$ = this.actions$
+    .ofType(UploadActionTypes.SubmitSuccess)
+    .pipe(
+      tap(() => this.router.navigate(['/', 'gallery'])),
+      map(() => new GalleryAction.Load()),
+    );
 
   constructor(
     private actions$: Actions,

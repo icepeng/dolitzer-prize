@@ -1,3 +1,11 @@
+import {
+  GalleryActions,
+  GalleryActionTypes,
+} from '../../gallery/actions/gallery';
+import {
+  HistoryActions,
+  HistoryActionTypes,
+} from '../../history/actions/history';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { PhotoActions, PhotoActionTypes } from '../actions/photo';
@@ -16,11 +24,28 @@ export const initialState: State = adapter.getInitialState({
   selectedPhotoId: null,
 });
 
-export function reducer(state = initialState, action: PhotoActions): State {
+export function reducer(
+  state = initialState,
+  action: PhotoActions | HistoryActions | GalleryActions,
+): State {
   switch (action.type) {
     case PhotoActionTypes.LoadSuccess: {
       return {
+        ...adapter.addOne(action.payload, state),
+        selectedPhotoId: state.selectedPhotoId,
+      };
+    }
+
+    case GalleryActionTypes.LoadSuccess: {
+      return {
         ...adapter.addMany(action.payload, state),
+        selectedPhotoId: state.selectedPhotoId,
+      };
+    }
+
+    case HistoryActionTypes.LoadSuccess: {
+      return {
+        ...adapter.addMany(action.payload.photos, state),
         selectedPhotoId: state.selectedPhotoId,
       };
     }

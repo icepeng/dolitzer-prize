@@ -12,6 +12,6 @@ export function getLastMonthPeriod() {
   };
 }
 
-export function getPeriodKey(period: Period) {
+export function getKeyFromPeriod(period: Period) {
   return `${period.year}-${period.month}`;
 }

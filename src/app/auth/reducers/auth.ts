@@ -1,6 +1,5 @@
+import { User } from '../../user/models/user';
 import { AuthActions, AuthActionTypes } from '../actions/auth';
-import { User } from '../models/user';
-import * as jwtDecode from 'jwt-decode';
 
 export interface State {
   user: User | null;

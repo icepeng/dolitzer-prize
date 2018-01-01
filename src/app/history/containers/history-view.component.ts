@@ -16,7 +16,7 @@ import * as fromHistory from '../reducers';
 export class HistoryViewComponent implements OnInit, OnDestroy {
   photo$ = this.store.select(fromPhoto.getSelectedPhoto);
   index$ = this.store.select(fromHistory.getIndex);
-  total$ = this.store.select(fromHistory.getHistoryTotal);
+  total$ = this.store.select(fromHistory.getSelectedPhotosTotal);
   subscription$: Subscription;
 
   constructor(

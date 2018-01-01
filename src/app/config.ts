@@ -9,6 +9,6 @@ export interface AppConfig {
 export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
 export const appConfig: AppConfig = {
-  apiAddress: 'https://localhost:3001/api/v1',
+  apiAddress: 'http://localhost:3000/api/v1',
   perPage: 6,
 };

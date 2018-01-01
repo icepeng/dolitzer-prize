@@ -2,10 +2,12 @@ import { GalleryActions, GalleryActionTypes } from '../actions/gallery';
 
 export interface State {
   page: number;
+  photoIds: number[];
 }
 
 export const initialState: State = {
   page: 1,
+  photoIds: [],
 };
 
 export function reducer(state = initialState, action: GalleryActions): State {
@@ -21,6 +23,13 @@ export function reducer(state = initialState, action: GalleryActions): State {
       return {
         ...state,
         page: Math.max(state.page - 1, 1),
+      };
+    }
+
+    case GalleryActionTypes.LoadSuccess: {
+      return {
+        ...state,
+        photoIds: action.payload.map(photo => photo.id),
       };
     }
 

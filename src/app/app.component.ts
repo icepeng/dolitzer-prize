@@ -6,7 +6,7 @@ import { combineLatest, filter, take } from 'rxjs/operators';
 
 import * as Auth from './auth/actions/auth';
 import * as fromAuth from './auth/reducers';
-import * as PhotoAction from './photo/actions/photo';
+import * as GalleryAction from './gallery/actions/gallery';
 import * as fromRoot from './reducers';
 
 @Component({
@@ -38,12 +38,7 @@ export class AppComponent implements OnInit {
         filter(([_, isLoggedIn]) => isLoggedIn),
       )
       .subscribe(() => {
-        this.store.dispatch(
-          new PhotoAction.Load({
-            month: new Date().getMonth(),
-            year: new Date().getFullYear(),
-          }),
-        );
+        this.store.dispatch(new GalleryAction.Load());
       });
 
     this.router.events

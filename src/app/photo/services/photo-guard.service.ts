@@ -3,10 +3,9 @@ import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
 
 import * as Photo from '../actions/photo';
-import * as History from '../../history/actions/history';
 import * as fromPhoto from '../reducers';
 
 @Injectable()

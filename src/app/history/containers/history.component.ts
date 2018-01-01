@@ -4,9 +4,9 @@ import { filter, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 import { APP_CONFIG, AppConfig } from '../../config';
-import * as PhotoAction from '../../photo/actions/photo';
 import { Period } from '../../photo/models/period';
 import * as HistoryAction from '../actions/history';
+import * as PageAction from '../actions/page';
 import * as fromHistory from '../reducers';
 
 @Component({
@@ -18,8 +18,8 @@ export class HistoryComponent implements OnInit, OnDestroy {
   perPage = this.appConfig.perPage;
   photos$ = this.store.select(fromHistory.getPagePhotos);
   page$ = this.store.select(fromHistory.getPage);
-  total$ = this.store.select(fromHistory.getHistoryTotal);
-  period$ = this.store.select(fromHistory.getPeriod);
+  total$ = this.store.select(fromHistory.getSelectedPhotosTotal);
+  period$ = this.store.select(fromHistory.getSelectedPeriod);
   unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -30,12 +30,12 @@ export class HistoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.period$
       .pipe(
-        withLatestFrom(this.store.select(fromHistory.isVisited)),
-        filter(([period, isVisited]) => !isVisited),
+        withLatestFrom(this.store.select(fromHistory.getSelectedHistory)),
+        filter(([period, history]) => period && !history),
         takeUntil(this.unsubscribe$),
       )
       .subscribe(([period]) =>
-        this.store.dispatch(new PhotoAction.Load(period)),
+        this.store.dispatch(new HistoryAction.Load(period)),
       );
   }
 
@@ -44,11 +44,11 @@ export class HistoryComponent implements OnInit, OnDestroy {
   }
 
   next() {
-    this.store.dispatch(new HistoryAction.NextPage());
+    this.store.dispatch(new PageAction.NextPage());
   }
 
   prev() {
-    this.store.dispatch(new HistoryAction.PrevPage());
+    this.store.dispatch(new PageAction.PrevPage());
   }
 
   ngOnDestroy() {

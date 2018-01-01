@@ -1,19 +1,13 @@
 import { Action } from '@ngrx/store';
 
 import { Period } from '../../photo/models/period';
+import { Photo } from '../../photo/models/photo';
 
 export enum HistoryActionTypes {
-  NextPage = '[History] Next Page',
-  PrevPage = '[History] Prev Page',
   SetPeriod = '[History] Set Period',
-}
-
-export class NextPage implements Action {
-  readonly type = HistoryActionTypes.NextPage;
-}
-
-export class PrevPage implements Action {
-  readonly type = HistoryActionTypes.PrevPage;
+  Load = '[History] Load',
+  LoadSuccess = '[History] Load Success',
+  LoadFailure = '[History] Load Failure',
 }
 
 export class SetPeriod implements Action {
@@ -22,4 +16,22 @@ export class SetPeriod implements Action {
   constructor(public payload: Period) {}
 }
 
-export type HistoryActions = NextPage | PrevPage | SetPeriod;
+export class Load implements Action {
+  readonly type = HistoryActionTypes.Load;
+
+  constructor(public payload: Period) {}
+}
+
+export class LoadSuccess implements Action {
+  readonly type = HistoryActionTypes.LoadSuccess;
+
+  constructor(public payload: { period: Period; photos: Photo[] }) {}
+}
+
+export class LoadFailure implements Action {
+  readonly type = HistoryActionTypes.LoadFailure;
+
+  constructor(public payload: any) {}
+}
+
+export type HistoryActions = SetPeriod | Load | LoadSuccess | LoadFailure;

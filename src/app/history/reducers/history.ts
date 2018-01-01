@@ -1,55 +1,46 @@
-import { PhotoActions, PhotoActionTypes } from '../../photo/actions/photo';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+
 import { Period } from '../../photo/models/period';
 import { HistoryActions, HistoryActionTypes } from '../actions/history';
-import { getLastMonthPeriod, getPeriodKey } from './util';
+import { History } from '../models/history';
+import { getKeyFromPeriod, getLastMonthPeriod } from './util';
 
-export interface State {
-  page: number;
-  period: Period;
-  visitedPeriod: {
-    [key: string]: boolean;
-  };
+export interface State extends EntityState<History> {
+  selectedId: string;
+  selectedPeriod: Period;
 }
 
-export const initialState: State = {
-  page: 1,
-  period: getLastMonthPeriod(),
-  visitedPeriod: {},
-};
+export const adapter: EntityAdapter<History> = createEntityAdapter<History>({
+  selectId: (history: History) => history.id,
+  sortComparer: false,
+});
 
-export function reducer(
-  state = initialState,
-  action: HistoryActions | PhotoActions,
-): State {
+export const initialState: State = adapter.getInitialState({
+  selectedId: getKeyFromPeriod(getLastMonthPeriod()),
+  selectedPeriod: getLastMonthPeriod(),
+});
+
+export function reducer(state = initialState, action: HistoryActions): State {
   switch (action.type) {
-    case HistoryActionTypes.NextPage: {
-      return {
-        ...state,
-        page: state.page + 1,
-      };
-    }
-
-    case HistoryActionTypes.PrevPage: {
-      return {
-        ...state,
-        page: Math.max(state.page - 1, 1),
-      };
-    }
-
     case HistoryActionTypes.SetPeriod: {
       return {
         ...state,
-        period: action.payload,
+        selectedId: getKeyFromPeriod(action.payload),
+        selectedPeriod: action.payload,
       };
     }
 
-    case PhotoActionTypes.Load: {
+    case HistoryActionTypes.LoadSuccess: {
       return {
-        ...state,
-        visitedPeriod: {
-          ...state.visitedPeriod,
-          [getPeriodKey(action.payload)]: true,
-        },
+        ...adapter.addOne(
+          {
+            id: getKeyFromPeriod(action.payload.period),
+            photoIds: action.payload.photos.map(photo => photo.id),
+          },
+          state,
+        ),
+        selectedId: state.selectedId,
+        selectedPeriod: state.selectedPeriod,
       };
     }
 
@@ -59,8 +50,6 @@ export function reducer(
   }
 }
 
-export const getPage = (state: State) => state.page;
+export const getSelectedId = (state: State) => state.selectedId;
 
-export const getPeriod = (state: State) => state.period;
-
-export const getVisitedPeriod = (state: State) => state.visitedPeriod;
+export const getSelectedPeriod = (state: State) => state.selectedPeriod;
