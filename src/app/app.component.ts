@@ -23,12 +23,6 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private store: Store<fromRoot.State>) {}
 
   ngOnInit() {
-    this.store.dispatch(
-      new Auth.Login(
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE0MDg5MjkwIiwiYmF0dGxldGFnIjoiaXBlbmcjMzUzMyIsImlhdCI6MTUxNDgyNzEwMCwiZXhwIjoxNTE0ODQxNTAwfQ.OPEtYY76rhFNpr8LeITJZ-R_3z-J92JmddP_YC8NxAA',
-      ),
-    );
-
     timer(0, 1000 * 60)
       .pipe(
         combineLatest(this.isLoggedIn$),
@@ -45,7 +39,7 @@ export class AppComponent implements OnInit {
 
   myPage() {
     this.store
-      .select(fromUser.getAuthedUserId)
+      .select(fromAuth.getId)
       .pipe(take(1))
       .subscribe(id => {
         this.router.navigate(['/', 'users', id]);

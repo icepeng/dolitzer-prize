@@ -26,6 +26,16 @@ export const getToken = createSelector(
   fromAuth.getToken,
 );
 
+export const getExp = createSelector(
+  selectAuthStatusState,
+  fromAuth.getExp,
+);
+
+export const getId = createSelector(
+  selectAuthStatusState,
+  fromAuth.getId,
+);
+
 export const getLoggedIn = createSelector(
   selectAuthStatusState,
   fromAuth.getLoggedIn,

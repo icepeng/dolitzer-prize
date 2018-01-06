@@ -1,7 +1,7 @@
-import { Photo } from '../../photo/models/photo';
 import { Action } from '@ngrx/store';
 
-import { UserDetail } from '../../user/models/user';
+import { User } from '../../user/models/user';
+import { Decoded } from '../models/token';
 
 export enum AuthActionTypes {
   Login = '[Auth] Login',
@@ -14,15 +14,13 @@ export enum AuthActionTypes {
 export class Login implements Action {
   readonly type = AuthActionTypes.Login;
 
-  constructor(public payload: string) {}
+  constructor() {}
 }
 
 export class LoginSuccess implements Action {
   readonly type = AuthActionTypes.LoginSuccess;
 
-  constructor(
-    public payload: { user: UserDetail; photos: Photo[]; likedPhotos: Photo[] },
-  ) {}
+  constructor(public payload: { token: string; decoded: Decoded<User> }) {}
 }
 
 export class LoginFailure implements Action {

@@ -18,18 +18,13 @@ import { AuthService } from '../services/auth.service';
 export class AuthEffects {
   @Effect()
   login$ = this.actions$.ofType(AuthActionTypes.Login).pipe(
-    map((action: Login) => action.payload),
-    switchMap(token => {
+    switchMap(async () => {
       try {
+        const token = await this.authService.login();
         const decoded = this.authService.decodeToken(token);
-        return this.userService
-          .getUser(decoded.id)
-          .pipe(
-            map(user => new LoginSuccess(user)),
-            catchError(err => of(new LoginFailure(err))),
-          );
+        return new LoginSuccess({ token, decoded });
       } catch (err) {
-        return of(new LoginFailure(err));
+        return new LoginFailure(err);
       }
     }),
   );
@@ -39,7 +34,7 @@ export class AuthEffects {
     .ofType(AuthActionTypes.LoginSuccess)
     .pipe(
       map((action: LoginSuccess) => action.payload),
-      map(user => new UserAction.LoadSuccess(user)),
+      map(({ decoded }) => new UserAction.Load(decoded.id)),
     );
 
   @Effect({ dispatch: false })

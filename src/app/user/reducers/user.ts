@@ -5,7 +5,6 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface State extends EntityState<UserDetail> {
   selectedUserId: string | null;
-  authedUserId: string | null;
 }
 
 export const adapter: EntityAdapter<UserDetail> = createEntityAdapter<
@@ -17,7 +16,6 @@ export const adapter: EntityAdapter<UserDetail> = createEntityAdapter<
 
 export const initialState: State = adapter.getInitialState({
   selectedUserId: null,
-  authedUserId: null,
 });
 
 export function reducer(
@@ -29,7 +27,6 @@ export function reducer(
       return {
         ...adapter.addOne(action.payload.user, state),
         selectedUserId: state.selectedUserId,
-        authedUserId: state.authedUserId,
       };
     }
 
@@ -40,13 +37,6 @@ export function reducer(
       };
     }
 
-    case AuthActionTypes.LoginSuccess: {
-      return {
-        ...state,
-        authedUserId: action.payload.user.id,
-      };
-    }
-
     default: {
       return state;
     }
@@ -54,5 +44,3 @@ export function reducer(
 }
 
 export const getSelectedId = (state: State) => state.selectedUserId;
-
-export const getAuthedId = (state: State) => state.authedUserId;

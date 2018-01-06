@@ -3,6 +3,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromPhoto from '../../photo/reducers';
 import * as fromRoot from '../../reducers';
 import * as fromUser from './user';
+import * as fromAuth from '../../auth/reducers';
 
 export interface UserState {
   user: fromUser.State;
@@ -26,11 +27,6 @@ export const getUserEntitiesState = createSelector(
 export const getSelectedUserId = createSelector(
   getUserEntitiesState,
   fromUser.getSelectedId,
-);
-
-export const getAuthedUserId = createSelector(
-  getUserEntitiesState,
-  fromUser.getAuthedId,
 );
 
 export const {
@@ -65,9 +61,11 @@ export const getSelectedUserBattletag = createSelector(
   user => user && user.battletag,
 );
 
+// Authed User
+
 export const getAuthedUser = createSelector(
   getUserEntities,
-  getAuthedUserId,
+  fromAuth.getId,
   (entities, authedId) => {
     return authedId && entities[authedId];
   },
