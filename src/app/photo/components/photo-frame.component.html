@@ -13,6 +13,8 @@
             <button (click)="like.emit()" class="btn btn-link">
                 <clr-icon [class.is-solid]="liked" shape="thumbs-up"></clr-icon> Like {{ photo.like }}
             </button>
+            <button (click)="random.emit()" class="btn btn-link">
+                <clr-icon shape="shuffle"></clr-icon> Random</button>
             <button [attr.disabled]="isFirst" (click)="prev.emit()" class="btn btn-link">
                 <clr-icon shape="caret" dir="left"></clr-icon>Prev</button>
             <span>{{ index + 1 }} / {{ total }}</span>

@@ -15,6 +15,7 @@ export class PhotoFrameComponent implements OnInit, OnChanges {
   @Output() next = new EventEmitter<void>();
   @Output() prev = new EventEmitter<void>();
   @Output() like = new EventEmitter<void>();
+  @Output() random = new EventEmitter<void>();
 
   isFirst: true | null;
   isLast: true | null;

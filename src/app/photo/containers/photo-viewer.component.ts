@@ -83,6 +83,18 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
       );
   }
 
+  random() {
+    this.photoIds$
+      .pipe(
+        combineLatest(this.total$),
+        take(1),
+        map(([ids, total]) => ids[Math.floor(Math.random() * total)]),
+      )
+      .subscribe(id =>
+        this.router.navigate(['../', id], { relativeTo: this.route }),
+      );
+  }
+
   ngOnDestroy() {
     this.subscription$.unsubscribe();
   }
