@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromRoot from '../../reducers';
 import * as fromPhoto from './photo';
+import * as fromUser from '../../user/reducers';
 
 export interface PhotoState {
   photo: fromPhoto.State;

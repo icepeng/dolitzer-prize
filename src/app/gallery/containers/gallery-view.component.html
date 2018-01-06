@@ -3,4 +3,4 @@
         돌아가기
     </a>
 </h1>
-<app-photo-frame [index]="index$ | async" [total]="total$ | async" (prev)="prev()" (next)="next()" [photo]="photo$ | async"></app-photo-frame>
+<app-photo-viewer [photoIds$]="photoIds$"></app-photo-viewer>

@@ -9,11 +9,12 @@ import { reducers } from './reducers';
 import { PhotoGuard } from './services/photo-guard.service';
 import { PhotoService } from './services/photo.service';
 import { PhotoFrameComponent } from './components/photo-frame.component';
+import { PhotoViewerComponent } from './containers/photo-viewer.component';
 
 @NgModule({
   imports: [SharedModule],
-  exports: [PhotoListComponent, PhotoFrameComponent],
-  declarations: [PhotoListComponent, PhotoFrameComponent],
+  exports: [PhotoListComponent, PhotoFrameComponent, PhotoViewerComponent],
+  declarations: [PhotoListComponent, PhotoFrameComponent, PhotoViewerComponent],
 })
 export class PhotoModule {
   static forRoot(): ModuleWithProviders {

@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { appConfig } from '../../config';
-import * as fromPhoto from '../../photo/reducers';
 import * as fromRoot from '../../reducers';
 import * as fromHistory from './history';
 import * as fromPage from './page';
@@ -54,15 +53,14 @@ export const getSelectedHistory = createSelector(
   },
 );
 
-export const getSelectedPhotos = createSelector(
-  fromPhoto.getPhotoEntities,
+export const getSelectedHistoryPhotoIds = createSelector(
   getSelectedHistory,
-  (photoEntities, history) => history ? history.photoIds.map(id => photoEntities[id]) : [],
+  history => history ? history.photoIds : [],
 );
 
 export const getSelectedPhotosTotal = createSelector(
-  getSelectedPhotos,
-  photos => photos.length,
+  getSelectedHistoryPhotoIds,
+  ids => ids.length,
 );
 
 /// Page
@@ -73,36 +71,3 @@ export const getHistoryPageState = createSelector(
 );
 
 export const getPage = createSelector(getHistoryPageState, fromPage.getPage);
-
-export const getPagePhotos = createSelector(
-  getSelectedPhotos,
-  getPage,
-  (photos, page) =>
-    photos.slice((page - 1) * appConfig.perPage, page * appConfig.perPage),
-);
-
-// View
-
-export const getIndex = createSelector(
-  getSelectedPhotos,
-  fromPhoto.getSelectedPhotoId,
-  (photos, id) => {
-    const index = photos.findIndex(photo => photo.id === id);
-    if (index === -1) {
-      return null;
-    }
-    return index;
-  },
-);
-
-export const getNextId = createSelector(
-  getSelectedPhotos,
-  getIndex,
-  (photos, index) => index !== null && photos[index + 1] && photos[index + 1].id,
-);
-
-export const getPrevId = createSelector(
-  getSelectedPhotos,
-  getIndex,
-  (photos, index) => index !== null && photos[index - 1] && photos[index - 1].id,
-);

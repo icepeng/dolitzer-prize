@@ -11,8 +11,10 @@ export class PhotoFrameComponent implements OnInit, OnChanges {
   @Input() photo: Photo;
   @Input() index: number;
   @Input() total: number;
+  @Input() liked: boolean;
   @Output() next = new EventEmitter<void>();
   @Output() prev = new EventEmitter<void>();
+  @Output() like = new EventEmitter<void>();
 
   isFirst: true | null;
   isLast: true | null;

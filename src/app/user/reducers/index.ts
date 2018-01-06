@@ -1,9 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import * as fromPhoto from '../../photo/reducers';
 import * as fromRoot from '../../reducers';
 import * as fromUser from './user';
-import * as fromAuth from '../../auth/reducers';
 
 export interface UserState {
   user: fromUser.State;
@@ -29,6 +27,11 @@ export const getSelectedUserId = createSelector(
   fromUser.getSelectedId,
 );
 
+export const getAuthedUserId = createSelector(
+  getUserEntitiesState,
+  fromUser.getAuthedId,
+);
+
 export const {
   selectIds: getUserIds,
   selectEntities: getUserEntities,
@@ -44,16 +47,14 @@ export const getSelectedUser = createSelector(
   },
 );
 
-export const getSelectedUserPhotos = createSelector(
+export const getSelectedUserPhotoIds = createSelector(
   getSelectedUser,
-  fromPhoto.getPhotoEntities,
-  (user, entities) => user && user.photoIds.map(id => entities[id]),
+  user => user && user.photoIds,
 );
 
-export const getSelectedUserLikedPhotos = createSelector(
+export const getSelectedUserLikedPhotoIds = createSelector(
   getSelectedUser,
-  fromPhoto.getPhotoEntities,
-  (user, entities) => user && user.likedPhotoIds.map(id => entities[id]),
+  user => user && user.likedPhotoIds,
 );
 
 export const getSelectedUserBattletag = createSelector(
@@ -65,7 +66,7 @@ export const getSelectedUserBattletag = createSelector(
 
 export const getAuthedUser = createSelector(
   getUserEntities,
-  fromAuth.getId,
+  getAuthedUserId,
   (entities, authedId) => {
     return authedId && entities[authedId];
   },
@@ -73,12 +74,12 @@ export const getAuthedUser = createSelector(
 
 export const getAuthedUserPhotoIds = createSelector(
   getAuthedUser,
-  user => user && user.photoIds,
+  user => user ? user.photoIds : [],
 );
 
 export const getAuthedUserLikedPhotoIds = createSelector(
   getAuthedUser,
-  user => user && user.likedPhotoIds,
+  user => user ? user.likedPhotoIds : [],
 );
 
 export const getAuthedUserBattletag = createSelector(

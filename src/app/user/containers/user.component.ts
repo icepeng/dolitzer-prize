@@ -1,9 +1,14 @@
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { map } from 'rxjs/operators';
 
-import * as fromUser from '../reducers';
+import { Photo } from '../../photo/models/photo';
+import * as fromPhoto from '../../photo/reducers';
 import * as UserAction from '../actions/user';
+import * as fromUser from '../reducers';
 
 @Component({
   selector: 'app-user',
@@ -12,8 +17,8 @@ import * as UserAction from '../actions/user';
 })
 export class UserComponent implements OnInit {
   battletag$ = this.store.select(fromUser.getSelectedUserBattletag);
-  photos$ = this.store.select(fromUser.getSelectedUserPhotos);
-  likedPhotos$ = this.store.select(fromUser.getSelectedUserLikedPhotos);
+  photos$: Observable<Photo[]>;
+  likedPhotos$: Observable<Photo[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,5 +29,15 @@ export class UserComponent implements OnInit {
     this.route.params.subscribe(params =>
       this.store.dispatch(new UserAction.Select(params['id'])),
     );
+
+    this.photos$ = combineLatest(
+      this.store.select(fromUser.getSelectedUserPhotoIds),
+      this.store.select(fromPhoto.getPhotoEntities),
+    ).pipe(map(([ids, entities]) => (ids ? ids.map(id => entities[id]) : [])));
+
+    this.likedPhotos$ = combineLatest(
+      this.store.select(fromUser.getSelectedUserLikedPhotoIds),
+      this.store.select(fromPhoto.getPhotoEntities),
+    ).pipe(map(([ids, entities]) => (ids ? ids.map(id => entities[id]) : [])));
   }
 }

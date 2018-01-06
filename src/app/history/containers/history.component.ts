@@ -1,10 +1,19 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter, takeUntil, withLatestFrom } from 'rxjs/operators';
+import {
+  combineLatest,
+  filter,
+  map,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
+import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
 import { APP_CONFIG, AppConfig } from '../../config';
 import { Period } from '../../photo/models/period';
+import { Photo } from '../../photo/models/photo';
+import * as fromPhoto from '../../photo/reducers';
 import * as HistoryAction from '../actions/history';
 import * as PageAction from '../actions/page';
 import * as fromHistory from '../reducers';
@@ -16,10 +25,10 @@ import * as fromHistory from '../reducers';
 })
 export class HistoryComponent implements OnInit, OnDestroy {
   perPage = this.appConfig.perPage;
-  photos$ = this.store.select(fromHistory.getPagePhotos);
   page$ = this.store.select(fromHistory.getPage);
   total$ = this.store.select(fromHistory.getSelectedPhotosTotal);
   period$ = this.store.select(fromHistory.getSelectedPeriod);
+  photos$: Observable<Photo[]>;
   unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -36,6 +45,20 @@ export class HistoryComponent implements OnInit, OnDestroy {
       )
       .subscribe(([period]) =>
         this.store.dispatch(new HistoryAction.Load(period)),
+      );
+
+    this.photos$ = this.store
+      .select(fromHistory.getSelectedHistoryPhotoIds)
+      .pipe(
+        combineLatest(this.store.select(fromPhoto.getPhotoEntities)),
+        map(([ids, entities]) => ids.map(id => entities[id])),
+        combineLatest(this.store.select(fromHistory.getPage)),
+        map(([photos, page]) =>
+          photos.slice(
+            (page - 1) * this.appConfig.perPage,
+            page * this.appConfig.perPage,
+          ),
+        ),
       );
   }
 

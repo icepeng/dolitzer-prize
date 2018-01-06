@@ -5,6 +5,9 @@ export enum LikeActionTypes {
   Like = '[Like] Like',
   LikeSuccess = '[Like] Like Success',
   LikeFailure = '[Like] Like Failure',
+  CancelLike = '[Like] Cancel Like',
+  CancelLikeSuccess = '[Like] Cancel Like Success',
+  CancelLikeFailure = '[Like] Cancel Like Failure',
 }
 
 export class Like implements Action {
@@ -25,4 +28,28 @@ export class LikeFailure implements Action {
   constructor(public payload: any) {}
 }
 
-export type LikeActions = Like | LikeSuccess | LikeFailure;
+export class CancelLike implements Action {
+  readonly type = LikeActionTypes.CancelLike;
+
+  constructor(public payload: number) {}
+}
+
+export class CancelLikeSuccess implements Action {
+  readonly type = LikeActionTypes.CancelLikeSuccess;
+
+  constructor(public payload: number) {}
+}
+
+export class CancelLikeFailure implements Action {
+  readonly type = LikeActionTypes.CancelLikeFailure;
+
+  constructor(public payload: any) {}
+}
+
+export type LikeActions =
+  | Like
+  | LikeSuccess
+  | LikeFailure
+  | CancelLike
+  | CancelLikeSuccess
+  | CancelLikeFailure;

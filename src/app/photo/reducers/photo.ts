@@ -31,8 +31,10 @@ export function reducer(
 ): State {
   switch (action.type) {
     case PhotoActionTypes.LoadSuccess: {
+      const photo = action.payload;
+      state = adapter.addOne(photo, state);
       return {
-        ...adapter.addOne(action.payload, state),
+        ...adapter.updateOne({ id: photo.id, changes: photo }, state),
         selectedPhotoId: state.selectedPhotoId,
       };
     }

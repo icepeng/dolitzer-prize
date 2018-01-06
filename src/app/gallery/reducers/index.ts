@@ -1,7 +1,5 @@
-import { appConfig } from '../../config';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import * as fromPhoto from '../../photo/reducers';
 import * as fromRoot from '../../reducers';
 import * as fromGallery from './gallery';
 
@@ -31,46 +29,12 @@ export const getPage = createSelector(
   fromGallery.getPage,
 );
 
-export const getGalleryPhotos = createSelector(
-  fromPhoto.getPhotoEntities,
+export const getGalleryPhotoIds = createSelector(
   getGalleryStatusState,
-  (entities, state) => state.photoIds.map(id => entities[id]),
+  fromGallery.getPhotoIds,
 );
 
 export const getGalleryPhotosTotal = createSelector(
-  getGalleryPhotos,
-  photos => photos.length,
-);
-
-export const getPagePhotos = createSelector(
-  getGalleryPhotos,
-  getPage,
-  (photos, page) =>
-    photos.slice((page - 1) * appConfig.perPage, page * appConfig.perPage),
-);
-
-// View
-
-export const getIndex = createSelector(
-  getGalleryPhotos,
-  fromPhoto.getSelectedPhotoId,
-  (photos, id) => {
-    const index = photos.findIndex(photo => photo.id === id);
-    if (index === -1) {
-      return null;
-    }
-    return index;
-  },
-);
-
-export const getNextId = createSelector(
-  getGalleryPhotos,
-  getIndex,
-  (photos, index) => index !== null && photos[index + 1] && photos[index + 1].id,
-);
-
-export const getPrevId = createSelector(
-  getGalleryPhotos,
-  getIndex,
-  (photos, index) => index !== null && photos[index - 1] && photos[index - 1].id,
+  getGalleryPhotoIds,
+  ids => ids.length,
 );

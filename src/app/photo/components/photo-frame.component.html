@@ -10,9 +10,12 @@
     </div>
     <div class="col-sm-8">
         <div class="action-buttons">
+            <button (click)="like.emit()" class="btn btn-link">
+                <clr-icon [class.is-solid]="liked" shape="thumbs-up"></clr-icon> Like {{ photo.like }}
+            </button>
             <button [attr.disabled]="isFirst" (click)="prev.emit()" class="btn btn-link">
                 <clr-icon shape="caret" dir="left"></clr-icon>Prev</button>
-                <span>{{ index + 1 }} / {{ total }}</span>
+            <span>{{ index + 1 }} / {{ total }}</span>
             <button [attr.disabled]="isLast" (click)="next.emit()" class="btn btn-link">Next
                 <clr-icon shape="caret" dir="right"></clr-icon>
             </button>

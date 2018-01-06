@@ -6,9 +6,9 @@ import { combineLatest, filter, take } from 'rxjs/operators';
 
 import * as Auth from './auth/actions/auth';
 import * as fromAuth from './auth/reducers';
-import * as fromUser from './user/reducers';
 import * as GalleryAction from './gallery/actions/gallery';
 import * as fromRoot from './reducers';
+import * as fromUser from './user/reducers';
 
 @Component({
   selector: 'my-app',
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
 
   myPage() {
     this.store
-      .select(fromAuth.getId)
+      .select(fromUser.getAuthedUserId)
       .pipe(take(1))
       .subscribe(id => {
         this.router.navigate(['/', 'users', id]);

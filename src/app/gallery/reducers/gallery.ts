@@ -40,3 +40,5 @@ export function reducer(state = initialState, action: GalleryActions): State {
 }
 
 export const getPage = (state: State) => state.page;
+
+export const getPhotoIds = (state: State) => state.photoIds;

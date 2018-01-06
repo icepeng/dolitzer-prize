@@ -31,11 +31,6 @@ export const getExp = createSelector(
   fromAuth.getExp,
 );
 
-export const getId = createSelector(
-  selectAuthStatusState,
-  fromAuth.getId,
-);
-
 export const getLoggedIn = createSelector(
   selectAuthStatusState,
   fromAuth.getLoggedIn,

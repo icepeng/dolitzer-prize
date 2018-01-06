@@ -5,6 +5,9 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import {
+  CancelLike,
+  CancelLikeFailure,
+  CancelLikeSuccess,
   Like,
   LikeActionTypes,
   LikeFailure,
@@ -22,9 +25,13 @@ import { PhotoService } from '../services/photo.service';
 export class PhotoEffects {
   @Effect()
   loadOne$ = this.actions$
-    .ofType(PhotoActionTypes.LoadOne)
+    .ofType(
+      PhotoActionTypes.LoadOne,
+      LikeActionTypes.LikeSuccess,
+      LikeActionTypes.CancelLikeSuccess,
+    )
     .pipe(
-      map((action: LoadOne) => action.payload),
+      map((action: LoadOne | LikeSuccess) => action.payload),
       switchMap(payload =>
         this.photoService
           .getOne(payload)
@@ -44,8 +51,23 @@ export class PhotoEffects {
         this.photoService
           .like(payload)
           .pipe(
-            map(photo => new LikeSuccess(payload)),
+            map(() => new LikeSuccess(payload)),
             catchError(err => of(new LikeFailure(err))),
+          ),
+      ),
+    );
+
+  @Effect()
+  cancelLike$ = this.actions$
+    .ofType(LikeActionTypes.CancelLike)
+    .pipe(
+      map((action: CancelLike) => action.payload),
+      switchMap(payload =>
+        this.photoService
+          .cancelLike(payload)
+          .pipe(
+            map(() => new CancelLikeSuccess(payload)),
+            catchError(err => of(new CancelLikeFailure(err))),
           ),
       ),
     );
