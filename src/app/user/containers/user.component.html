@@ -3,14 +3,14 @@
   <clr-tab>
     <button clrTabLink>Photos</button>
     <clr-tab-content *clrIfActive>
-      <app-photo-list [photos]="photos$ | async"></app-photo-list>
+      <app-photo-list (select)="onPhotoSelect($event)" [photos]="photos$ | async"></app-photo-list>
     </clr-tab-content>
   </clr-tab>
 
   <clr-tab>
     <button clrTabLink>Liked Photos</button>
     <clr-tab-content *clrIfActive>
-      <app-photo-list [photos]="likedPhotos$ | async"></app-photo-list>
+      <app-photo-list (select)="onLikedPhotoSelect($event)" [photos]="likedPhotos$ | async"></app-photo-list>
     </clr-tab-content>
   </clr-tab>
 </clr-tabs>

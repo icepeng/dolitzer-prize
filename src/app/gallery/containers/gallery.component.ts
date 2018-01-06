@@ -1,13 +1,14 @@
-import { combineLatest, map } from 'rxjs/operators';
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { combineLatest, map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../config';
 import { Photo } from '../../photo/models/photo';
+import * as fromPhoto from '../../photo/reducers';
 import * as GalleryAction from '../actions/gallery';
 import * as fromGallery from '../reducers';
-import * as fromPhoto from '../../photo/reducers';
 
 @Component({
   selector: 'app-gallery',
@@ -22,6 +23,7 @@ export class GalleryComponent implements OnInit {
 
   constructor(
     private store: Store<fromGallery.GalleryState>,
+    private router: Router,
     @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
@@ -47,5 +49,9 @@ export class GalleryComponent implements OnInit {
 
   prev() {
     this.store.dispatch(new GalleryAction.PrevPage());
+  }
+
+  onSelect(photo: Photo) {
+    this.router.navigate(['/', 'gallery', photo.id]);
   }
 }

@@ -1,3 +1,3 @@
 <h1>갤러리</h1>
-<app-photo-list [photos]="photos$ | async"></app-photo-list>
+<app-photo-list (select)="onSelect($event)" [photos]="photos$ | async"></app-photo-list>
 <app-navigator [total]="total$ | async" [perPage]="perPage" [page]="page$ | async" (prev)="prev()" (next)="next()"></app-navigator>

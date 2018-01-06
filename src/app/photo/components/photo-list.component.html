@@ -1,6 +1,6 @@
 <div class="row">
   <div *ngFor="let photo of photos" class="col-sm-4">
-    <a [routerLink]="['./', photo.id]" class="card clickable">
+    <a (click)="select.emit(photo)" class="card clickable">
       <div class="card-img">
         <img [attr.src]="photo.imgLink">
       </div>

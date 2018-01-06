@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -21,13 +21,14 @@ export class UserComponent implements OnInit {
   likedPhotos$: Observable<Photo[]>;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromUser.UserState>,
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params =>
-      this.store.dispatch(new UserAction.Select(params['id'])),
+      this.store.dispatch(new UserAction.Select(params['userId'])),
     );
 
     this.photos$ = combineLatest(
@@ -39,5 +40,17 @@ export class UserComponent implements OnInit {
       this.store.select(fromUser.getSelectedUserLikedPhotoIds),
       this.store.select(fromPhoto.getPhotoEntities),
     ).pipe(map(([ids, entities]) => (ids ? ids.map(id => entities[id]) : [])));
+  }
+
+  onPhotoSelect(photo: Photo) {
+    this.router.navigate(['./', 'photos', photo.id], {
+      relativeTo: this.route,
+    });
+  }
+
+  onLikedPhotoSelect(photo: Photo) {
+    this.router.navigate(['./', 'liked-photos', photo.id], {
+      relativeTo: this.route,
+    });
   }
 }

@@ -1,4 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   combineLatest,
@@ -33,6 +34,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<fromHistory.HistoryState>,
+    private router: Router,
     @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
@@ -72,6 +74,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   prev() {
     this.store.dispatch(new PageAction.PrevPage());
+  }
+
+  onSelect(photo: Photo) {
+    this.router.navigate(['/', 'gallery', photo.id]);
   }
 
   ngOnDestroy() {
