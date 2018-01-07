@@ -1,0 +1,51 @@
+<h1>정보</h1>
+<h3>돌리처상에 대해</h3>
+<ul class="list list-spacer">
+  <li>돌리처상은 하스스톤의 스크린샷을 공유하고 평가하기 위해 제작되었습니다.</li>
+  <li>버그 제보 및 건의 사항은 typ0@naver.com으로 해주시면 됩니다.</li>
+  <li>후원은 언제나 환영입니다.</li>
+</ul>
+
+<div class="email-form">
+  <clr-alert [clrAlertClosed]="submitStatus.status === 'none' || submitStatus.status === 'pending'" [clrAlertType]="submitStatus.status"
+    (clrAlertClosedChange)="onClose()">
+    <div class="alert-item">
+      <span class="alert-text">
+        {{ submitStatus.message }}
+      </span>
+    </div>
+  </clr-alert>
+  <form [formGroup]="formGroup" (submit)="onSubmit(formGroup.value)">
+    <div class="form-block">
+      <label>개발자에게 이메일 보내기</label>
+      <div class="form-group">
+        <label for="_name" class="required">이름</label>
+        <input id="_name" type="text" formControlName="name" size="40">
+      </div>
+      <div class="form-group">
+        <label for="_email">이메일</label>
+        <input id="_email" type="email" formControlName="email" size="40">
+      </div>
+      <div class="form-group">
+        <label for="_message" class="required">내용</label>
+        <textarea id="_message" formControlName="message" rows="5"></textarea>
+      </div>
+    </div>
+    <button [clrLoading]="submitStatus.status === 'pending'" [attr.disabled]="formGroup.invalid ? true : null" type="submit"
+      class="btn btn-primary">전송</button>
+  </form>
+</div>
+
+<div class="donate">
+  <h2>후원하기</h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <img src="../../images/bitqr.png">
+      <div>Bitcoin: 184t3DJea7MtYk35koPoNDetygJeUQWdt5</div>
+    </div>
+    <div class="col-sm-6">
+      <img src="../../images/ethqr.png">
+      <div>Ethereum: 0x1f2198f4baB8EA956317297C59c4e9036A6FfdF6</div>
+    </div>
+  </div>
+</div>

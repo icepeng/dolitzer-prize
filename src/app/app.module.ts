@@ -11,6 +11,7 @@ import { StoreModule } from '@ngrx/store';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 
+import { AboutModule } from './about/about.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { APP_CONFIG, appConfig } from './config';
@@ -30,6 +31,7 @@ import { UserModule } from './user/user.module';
     HttpClientModule,
     ClarityModule,
     ManualModule,
+    AboutModule,
     UserModule.forRoot(),
     AuthModule.forRoot(),
     PhotoModule.forRoot(),
