@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { APP_CONFIG, appConfig } from './config';
 import { GalleryModule } from './gallery/gallery.module';
+import { ManualModule } from './manual/manual.module';
 import { PhotoModule } from './photo/photo.module';
 import { metaReducers, reducers } from './reducers';
 import { appRoutes } from './routes';
@@ -26,6 +27,7 @@ import { UserModule } from './user/user.module';
     FormsModule,
     HttpClientModule,
     ClarityModule,
+    ManualModule,
     UserModule.forRoot(),
     AuthModule.forRoot(),
     PhotoModule.forRoot(),
