@@ -13,3 +13,10 @@ export interface UserFromApi extends User {
   photos: Photo[];
   likedPhotos: Photo[];
 }
+
+export interface UserPhotoList {
+  id: string;
+  page: number;
+  sortOrder: 'ASC' | 'DESC';
+  sortColumn: string;
+}

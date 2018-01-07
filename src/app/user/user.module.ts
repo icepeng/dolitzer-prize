@@ -36,20 +36,18 @@ export class UserModule {
     UserModule,
     RouterModule.forChild([
       {
-        path: 'users',
-        canActivate: [AuthGuard],
+        path: 'users/:userId',
+        canActivate: [AuthGuard, UserGuard],
         children: [
-          { path: ':userId', component: UserComponent },
           {
-            path: ':userId/photos/:id',
+            path: 'photos/:id',
             component: UserPhotosViewComponent,
-            canActivate: [UserGuard],
           },
           {
-            path: ':userId/liked-photos/:id',
+            path: 'liked-photos/:id',
             component: UserLikedPhotosViewComponent,
-            canActivate: [UserGuard],
           },
+          { path: '', component: UserComponent },
         ],
       },
     ]),

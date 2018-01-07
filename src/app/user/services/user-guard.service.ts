@@ -17,8 +17,8 @@ export class UserGuard implements CanActivate {
       tap(entities => {
         if (!entities[id]) {
           this.store.dispatch(new UserAction.Load(id));
-          this.store.dispatch(new UserAction.Select(id));
         }
+        this.store.dispatch(new UserAction.Select(id));
       }),
       filter(entities => !!entities[id]),
       take(1),

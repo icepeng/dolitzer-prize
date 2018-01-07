@@ -1,12 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest, map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../config';
 import { Photo } from '../../photo/models/photo';
-import * as fromPhoto from '../../photo/reducers';
 import * as GalleryAction from '../actions/gallery';
 import * as fromGallery from '../reducers';
 
@@ -19,7 +16,9 @@ export class GalleryComponent implements OnInit {
   perPage = this.appConfig.perPage;
   page$ = this.store.select(fromGallery.getPage);
   total$ = this.store.select(fromGallery.getGalleryPhotosTotal);
-  photos$: Observable<Photo[]>;
+  photoIds$ = this.store.select(fromGallery.getGalleryPhotoIds);
+  sortColumn$ = this.store.select(fromGallery.getSortColumn);
+  sortOrder$ = this.store.select(fromGallery.getSortOrder);
 
   constructor(
     private store: Store<fromGallery.GalleryState>,
@@ -27,21 +26,7 @@ export class GalleryComponent implements OnInit {
     @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
-  ngOnInit() {
-    this.photos$ = this.store
-      .select(fromGallery.getGalleryPhotoIds)
-      .pipe(
-        combineLatest(this.store.select(fromPhoto.getPhotoEntities)),
-        map(([ids, entities]) => ids.map(id => entities[id])),
-        combineLatest(this.store.select(fromGallery.getPage)),
-        map(([photos, page]) =>
-          photos.slice(
-            (page - 1) * this.appConfig.perPage,
-            page * this.appConfig.perPage,
-          ),
-        ),
-      );
-  }
+  ngOnInit() {}
 
   next() {
     this.store.dispatch(new GalleryAction.NextPage());
@@ -49,6 +34,10 @@ export class GalleryComponent implements OnInit {
 
   prev() {
     this.store.dispatch(new GalleryAction.PrevPage());
+  }
+
+  onSortChange(sort: any) {
+    this.store.dispatch(new GalleryAction.Sort(sort));
   }
 
   onSelect(photo: Photo) {

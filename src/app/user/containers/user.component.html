@@ -1,16 +1,30 @@
 <h1>{{ battletag$ | async }}</h1>
 <clr-tabs>
-  <clr-tab>
-    <button clrTabLink>Photos</button>
-    <clr-tab-content *clrIfActive>
-      <app-photo-list (select)="onPhotoSelect($event)" [photos]="photos$ | async"></app-photo-list>
-    </clr-tab-content>
-  </clr-tab>
+    <clr-tab>
+        <button clrTabLink>Photos</button>
+        <clr-tab-content *clrIfActive>
+            <div class="row">
+                <div class="col-sm-6">
+                    <app-photo-sort [sortColumn]="sortColumn$ | async" [sortOrder]="sortOrder$ | async" (sortChange)="onSortChange($event)"></app-photo-sort>
+                </div>
+            </div>
+            <app-photo-list (select)="onSelect($event)" [photoIds$]="photoIds$" [page$]="page$" [perPage]="perPage" [sortColumn$]="sortColumn$"
+                [sortOrder$]="sortOrder$"></app-photo-list>
+            <app-navigator [total]="total$ | async" [perPage]="perPage" [page]="page$ | async" (prev)="prev()" (next)="next()"></app-navigator>
+        </clr-tab-content>
+    </clr-tab>
 
-  <clr-tab>
-    <button clrTabLink>Liked Photos</button>
-    <clr-tab-content *clrIfActive>
-      <app-photo-list (select)="onLikedPhotoSelect($event)" [photos]="likedPhotos$ | async"></app-photo-list>
-    </clr-tab-content>
-  </clr-tab>
+    <clr-tab>
+        <button clrTabLink>Liked Photos</button>
+        <clr-tab-content *clrIfActive>
+            <div class="row">
+                <div class="col-sm-6">
+                    <app-photo-sort [sortColumn]="likedSortColumn$ | async" [sortOrder]="likedSortOrder$ | async" (sortChange)="onLikedSortChange($event)"></app-photo-sort>
+                </div>
+            </div>
+            <app-photo-list (select)="onLikedSelect($event)" [photoIds$]="likedPhotoIds$" [page$]="likedPage$" [perPage]="perPage" [sortColumn$]="likedSortColumn$"
+                [sortOrder$]="sortOrder$"></app-photo-list>
+            <app-navigator [total]="likedTotal$ | async" [perPage]="perPage" [page]="likedPage$ | async" (prev)="likedPrev()" (next)="likedNext()"></app-navigator>
+        </clr-tab-content>
+    </clr-tab>
 </clr-tabs>

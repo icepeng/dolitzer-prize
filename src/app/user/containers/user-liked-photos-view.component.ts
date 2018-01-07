@@ -11,6 +11,8 @@ import * as fromUser from '../reducers';
 export class UserLikedPhotosViewComponent implements OnInit {
   battletag$ = this.store.select(fromUser.getSelectedUserBattletag);
   photoIds$ = this.store.select(fromUser.getSelectedUserLikedPhotoIds);
+  sortColumn$ = this.store.select(fromUser.getSelectedUserLikedPhotoListSortColumn);
+  sortOrder$ = this.store.select(fromUser.getSelectedUserLikedPhotoListSortOrder);
 
   constructor(private store: Store<fromUser.State>) {}
 

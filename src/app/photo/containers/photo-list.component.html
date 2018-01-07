@@ -1,0 +1,18 @@
+<div class="row">
+    <div *ngFor="let photo of photos$ | async" class="col-sm-4">
+        <a (click)="select.emit(photo)" class="card clickable">
+            <div class="card-img">
+                <img [attr.src]="photo.imgLink">
+            </div>
+            <div class="card-block">
+                <p class="card-title">
+                    {{ photo.title }}
+                </p>
+                <p class="card-text">
+                    {{ photo.user.battletag }}
+                    <span class="p7">{{ photo.createTime | date:'yyyy.MM.dd' }}</span>
+                </p>
+            </div>
+        </a>
+    </div>
+</div>

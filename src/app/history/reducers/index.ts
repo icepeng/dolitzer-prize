@@ -3,11 +3,11 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { appConfig } from '../../config';
 import * as fromRoot from '../../reducers';
 import * as fromHistory from './history';
-import * as fromPage from './page';
+import * as fromList from './list';
 
 export interface HistoryState {
   history: fromHistory.State;
-  page: fromPage.State;
+  list: fromList.State;
 }
 
 export interface State extends fromRoot.State {
@@ -16,7 +16,7 @@ export interface State extends fromRoot.State {
 
 export const reducers = {
   history: fromHistory.reducer,
-  page: fromPage.reducer,
+  list: fromList.reducer,
 };
 
 export const getHistoryState = createFeatureSelector<HistoryState>('history');
@@ -55,7 +55,7 @@ export const getSelectedHistory = createSelector(
 
 export const getSelectedHistoryPhotoIds = createSelector(
   getSelectedHistory,
-  history => history ? history.photoIds : [],
+  history => (history ? history.photoIds : []),
 );
 
 export const getSelectedPhotosTotal = createSelector(
@@ -65,9 +65,13 @@ export const getSelectedPhotosTotal = createSelector(
 
 /// Page
 
-export const getHistoryPageState = createSelector(
+export const getHistoryListState = createSelector(
   getHistoryState,
-  (state: HistoryState) => state.page,
+  (state: HistoryState) => state.list,
 );
 
-export const getPage = createSelector(getHistoryPageState, fromPage.getPage);
+export const getPage = createSelector(getHistoryListState, fromList.getPage);
+
+export const getSortColumn = createSelector(getHistoryListState, fromList.getSortColumn);
+
+export const getSortOrder = createSelector(getHistoryListState, fromList.getSortOrder);

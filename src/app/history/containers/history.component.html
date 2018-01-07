@@ -1,4 +1,12 @@
 <h1>역사</h1>
-<app-history-period (periodChange)="onPeriodChange($event)" [period]="period$ | async"></app-history-period>
-<app-photo-list (select)="onSelect($event)" [photos]="photos$ | async"></app-photo-list>
+<div class="row">
+    <div class="col-sm-6">
+        <app-history-period (periodChange)="onPeriodChange($event)" [period]="period$ | async"></app-history-period>
+    </div>
+    <div class="col-sm-6">
+        <app-photo-sort [sortColumn]="sortColumn$ | async" [sortOrder]="sortOrder$ | async" (sortChange)="onSortChange($event)"></app-photo-sort>
+    </div>
+</div>
+<app-photo-list (select)="onSelect($event)" [photoIds$]="photoIds$" [page$]="page$" [perPage]="perPage" [sortColumn$]="sortColumn$"
+    [sortOrder$]="sortOrder$"></app-photo-list>
 <app-navigator [total]="total$ | async" [perPage]="perPage" [page]="page$ | async" (prev)="prev()" (next)="next()"></app-navigator>

@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { APP_CONFIG, AppConfig } from '../../config';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import { Photo } from '../../photo/models/photo';
 import * as fromPhoto from '../../photo/reducers';
 import * as UserAction from '../actions/user';
 import * as fromUser from '../reducers';
+import * as PhotoAction from '../actions/photo';
+import * as LikedPhotoAction from '../actions/liked-photo';
 
 @Component({
   selector: 'app-user',
@@ -17,40 +20,96 @@ import * as fromUser from '../reducers';
 })
 export class UserComponent implements OnInit {
   battletag$ = this.store.select(fromUser.getSelectedUserBattletag);
-  photos$: Observable<Photo[]>;
-  likedPhotos$: Observable<Photo[]>;
+  perPage = this.appConfig.perPage;
+
+  page$ = this.store.select(fromUser.getSelectedUserPhotoListPage);
+  sortColumn$ = this.store.select(fromUser.getSelectedUserPhotoListSortColumn);
+  sortOrder$ = this.store.select(fromUser.getSelectedUserPhotoListSortOrder);
+  photoIds$ = this.store.select(fromUser.getSelectedUserPhotoIds);
+  total$ = this.store.select(fromUser.getSelectedUserPhotoTotal);
+
+  likedPage$ = this.store.select(fromUser.getSelectedUserLikedPhotoListPage);
+  likedSortColumn$ = this.store.select(
+    fromUser.getSelectedUserLikedPhotoListSortColumn,
+  );
+  likedSortOrder$ = this.store.select(
+    fromUser.getSelectedUserLikedPhotoListSortOrder,
+  );
+  likedPhotoIds$ = this.store.select(fromUser.getSelectedUserLikedPhotoIds);
+  likedTotal$ = this.store.select(fromUser.getSelectedUserLikedPhotoTotal);
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromUser.UserState>,
+    @Inject(APP_CONFIG) private appConfig: AppConfig,
   ) {}
 
-  ngOnInit() {
-    this.route.params.subscribe(params =>
-      this.store.dispatch(new UserAction.Select(params['userId'])),
-    );
+  ngOnInit() {}
 
-    this.photos$ = combineLatest(
-      this.store.select(fromUser.getSelectedUserPhotoIds),
-      this.store.select(fromPhoto.getPhotoEntities),
-    ).pipe(map(([ids, entities]) => (ids ? ids.map(id => entities[id]) : [])));
-
-    this.likedPhotos$ = combineLatest(
-      this.store.select(fromUser.getSelectedUserLikedPhotoIds),
-      this.store.select(fromPhoto.getPhotoEntities),
-    ).pipe(map(([ids, entities]) => (ids ? ids.map(id => entities[id]) : [])));
-  }
-
-  onPhotoSelect(photo: Photo) {
+  onSelect(photo: Photo) {
     this.router.navigate(['./', 'photos', photo.id], {
       relativeTo: this.route,
     });
   }
 
-  onLikedPhotoSelect(photo: Photo) {
+  onLikedSelect(photo: Photo) {
     this.router.navigate(['./', 'liked-photos', photo.id], {
       relativeTo: this.route,
     });
+  }
+
+  next() {
+    this.store
+      .select(fromUser.getSelectedUserId)
+      .pipe(take(1))
+      .subscribe((id: string) =>
+        this.store.dispatch(new PhotoAction.NextPage(id)),
+      );
+  }
+
+  prev() {
+    this.store
+      .select(fromUser.getSelectedUserId)
+      .pipe(take(1))
+      .subscribe((id: string) =>
+        this.store.dispatch(new PhotoAction.PrevPage(id)),
+      );
+  }
+
+  onSortChange(sort: any) {
+    this.store
+      .select(fromUser.getSelectedUserId)
+      .pipe(take(1))
+      .subscribe((id: string) =>
+        this.store.dispatch(new PhotoAction.Sort({ id, ...sort })),
+      );
+  }
+
+  likedNext() {
+    this.store
+      .select(fromUser.getSelectedUserId)
+      .pipe(take(1))
+      .subscribe((id: string) =>
+        this.store.dispatch(new LikedPhotoAction.NextPage(id)),
+      );
+  }
+
+  likedPrev() {
+    this.store
+      .select(fromUser.getSelectedUserId)
+      .pipe(take(1))
+      .subscribe((id: string) =>
+        this.store.dispatch(new LikedPhotoAction.PrevPage(id)),
+      );
+  }
+
+  onLikedSortChange(sort: any) {
+    this.store
+      .select(fromUser.getSelectedUserId)
+      .pipe(take(1))
+      .subscribe((id: string) =>
+        this.store.dispatch(new LikedPhotoAction.Sort({ id, ...sort })),
+      );
   }
 }

@@ -10,6 +10,8 @@ import * as fromGallery from '../reducers';
 })
 export class GalleryViewComponent implements OnInit {
   photoIds$ = this.store.select(fromGallery.getGalleryPhotoIds);
+  sortColumn$ = this.store.select(fromGallery.getSortColumn);
+  sortOrder$ = this.store.select(fromGallery.getSortOrder);
 
   constructor(private store: Store<fromGallery.State>) {}
 

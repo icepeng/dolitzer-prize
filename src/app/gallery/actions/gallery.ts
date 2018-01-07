@@ -7,6 +7,7 @@ export enum GalleryActionTypes {
   Load = '[Gallery] Load',
   LoadSuccess = '[Gallery] Load Success',
   LoadFailure = '[Gallery] Load Failure',
+  Sort = '[Gallery] Sort',
 }
 
 export class NextPage implements Action {
@@ -33,4 +34,10 @@ export class LoadFailure implements Action {
   constructor(public payload: any) {}
 }
 
-export type GalleryActions = NextPage | PrevPage | Load | LoadSuccess | LoadFailure;
+export class Sort implements Action {
+  readonly type = GalleryActionTypes.Sort;
+
+  constructor(public payload: { sortColumn: string; sortOrder: 'ASC' | 'DESC' }) {}
+}
+
+export type GalleryActions = NextPage | PrevPage | Load | LoadSuccess | LoadFailure | Sort;

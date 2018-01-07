@@ -1,0 +1,20 @@
+<form [formGroup]="formGroup">
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <div class="select">
+                <select formControlName="sortColumn">
+                    <option value="createTime">작성일자</option>
+                    <option value="like">추천</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="select">
+                <select formControlName="sortOrder">
+                    <option value="ASC">오름차순</option>
+                    <option value="DESC">내림차순</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>

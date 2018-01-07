@@ -38,3 +38,12 @@ export const getGalleryPhotosTotal = createSelector(
   getGalleryPhotoIds,
   ids => ids.length,
 );
+
+export const getSortColumn = createSelector(
+  getGalleryStatusState,
+  fromGallery.getSortColumn,
+);
+export const getSortOrder = createSelector(
+  getGalleryStatusState,
+  fromGallery.getSortOrder,
+);

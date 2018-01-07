@@ -1,7 +1,14 @@
+import { Photo } from '../models/photo';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, filter, map, take } from 'rxjs/operators';
+import {
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  map,
+  take,
+} from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs/Rx';
 
 import * as PhotoLikeAction from '../actions/like';
@@ -16,7 +23,10 @@ import * as fromUser from '../../user/reducers';
 })
 export class PhotoViewerComponent implements OnInit, OnDestroy {
   @Input() photoIds$: Observable<number[]>;
+  @Input() sortColumn$: Observable<keyof Photo>;
+  @Input() sortOrder$: Observable<'ASC' | 'DESC'>;
   photo$ = this.store.select(fromPhoto.getSelectedPhoto);
+  sortedPhotos$: Observable<Photo[]>;
   index$: Observable<number>;
   liked$: Observable<boolean>;
   total$: Observable<number>;
@@ -29,14 +39,29 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.sortedPhotos$ = this.store
+      .select(fromPhoto.getPhotoEntities)
+      .pipe(
+        combineLatest(this.photoIds$, this.sortColumn$, this.sortOrder$),
+        distinctUntilChanged(),
+        map(([entities, ids, sortColumn, sortOrder]) =>
+          ids
+            .map(id => entities[id])
+            .sort(this.sortFunc(sortColumn, sortOrder)),
+        ),
+      );
+
     this.subscription$ = this.route.params.subscribe(params =>
       this.store.dispatch(new PhotoAction.Select(+params['id'])),
     );
+
     this.total$ = this.photoIds$.pipe(map(ids => ids.length));
-    this.index$ = this.photoIds$.pipe(
+
+    this.index$ = this.sortedPhotos$.pipe(
       combineLatest(this.store.select(fromPhoto.getSelectedPhotoId)),
-      map(([ids, selectedId]) => ids.findIndex(id => id === selectedId)),
+      map(([photos, id]) => photos.findIndex(photo => photo.id === id)),
     );
+
     this.liked$ = this.photo$.pipe(
       combineLatest(this.store.select(fromUser.getAuthedUserLikedPhotoIds)),
       map(
@@ -46,12 +71,12 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
   }
 
   prev() {
-    this.photoIds$
+    this.sortedPhotos$
       .pipe(
         combineLatest(this.index$),
         take(1),
-        filter(([ids, index]) => index > 0),
-        map(([ids, index]) => ids[index - 1]),
+        filter(([photos, index]) => index > 0),
+        map(([photos, index]) => photos[index - 1].id),
       )
       .subscribe(id =>
         this.router.navigate(['../', id], { relativeTo: this.route }),
@@ -59,12 +84,12 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
   }
 
   next() {
-    this.photoIds$
+    this.sortedPhotos$
       .pipe(
         combineLatest(this.index$),
         take(1),
-        filter(([ids, index]) => index < ids.length),
-        map(([ids, index]) => ids[index + 1]),
+        filter(([photos, index]) => index < photos.length),
+        map(([photos, index]) => photos[index + 1].id),
       )
       .subscribe(id =>
         this.router.navigate(['../', id], { relativeTo: this.route }),
@@ -98,4 +123,23 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription$.unsubscribe();
   }
+
+  sortFunc = (sortColumn: keyof Photo, sortOrder: 'ASC' | 'DESC') => (
+    a: Photo,
+    b: Photo,
+  ) => {
+    if (a[sortColumn] > b[sortColumn]) {
+      return sortOrder === 'ASC' ? 1 : -1;
+    }
+    if (a[sortColumn] < b[sortColumn]) {
+      return sortOrder === 'DESC' ? 1 : -1;
+    }
+    if (a.createTime > b.createTime) {
+      return sortOrder === 'ASC' ? 1 : -1;
+    }
+    if (a.createTime < b.createTime) {
+      return sortOrder === 'DESC' ? 1 : -1;
+    }
+    return 0;
+  };
 }
