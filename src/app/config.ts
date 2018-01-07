@@ -9,6 +9,6 @@ export interface AppConfig {
 export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
 export const appConfig: AppConfig = {
-  apiAddress: 'http://localhost:3000/api/v1',
+  apiAddress: 'https://api.icepeng.com:3002/api/v1/',
   perPage: 6,
 };
