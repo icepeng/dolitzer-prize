@@ -8,6 +8,8 @@ import { ClarityModule } from '@clr/angular';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
@@ -36,6 +38,7 @@ import { UserModule } from './user/user.module';
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule,
     EffectsModule.forRoot([]),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
   ],
   providers: [{ provide: APP_CONFIG, useValue: appConfig }],
   bootstrap: [AppComponent],
