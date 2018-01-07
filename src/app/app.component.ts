@@ -23,19 +23,6 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private store: Store<fromRoot.State>) {}
 
   ngOnInit() {
-    // TODO: Remove at prod
-    this.store.dispatch(
-      new Auth.LoginSuccess({
-        decoded: {
-          battletag: 'ipeng#3533',
-          exp: 1515261727,
-          id: '14089290',
-        },
-        token:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE0MDg5MjkwIiwiYmF0dGxldGFnIjoiaXBlbmcjMzUzMyIsImlhdCI6MTUxNTMyNTY2NywiZXhwIjoxNTE1MzQwMDY3fQ.Zq7CR41cxRTjzxJAYYHkXzQ6c3ifoACVaxQEcpahJxI',
-      }),
-    );
-
     timer(0, 1000 * 60)
       .pipe(
         combineLatest(this.isLoggedIn$),
